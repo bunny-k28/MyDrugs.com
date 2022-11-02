@@ -1,0 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+  background-image: url(../images/login_bg.jpg);
+  padding-top: 5cm;
+  padding-bottom: 5cm;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: darken;
+  border-style: initial;
+}
+
+.label{
+    font-style: oblique;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 
+    'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(255, 0, 217);
+}
+
+.form-group {
+    padding-left: 12cm;
+}
+
+.input-box {
+    background-color: black;
+}
+
+.submit-btn {
+    margin-left: 4%;
+
+}
+
+.spam-box {
+    background-color: black;
+    color: white;
+}

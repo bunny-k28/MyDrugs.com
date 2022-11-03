@@ -3,12 +3,14 @@ import flask
 import dotenv
 import sqlite3
 
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from flask import render_template, redirect, url_for, request, session
 from __init__ import *
 
 
 http = flask.Flask(__name__)
+user_data = {"username": str, "password": str, 
+             "email": str, "address": str, "PINcode": int}
 
 
 # data variables
@@ -51,7 +53,7 @@ def home():
 def signin():
     return render_template("login.html")
 
-@http.route("/signin", methods=["POST"])
+@http.route("/signin", methods=["POST"]) 
 def signin_form():
 
     username = request.form["username"]
@@ -70,12 +72,32 @@ def signin_form():
 
 # signup page route
 @http.route("/signup")
-def signup():
+def signup_page1():
     return render_template("signup.html")
 
 @http.route("/signup", methods=["POST"])
-def signup_form():
-    pass
+def signup_form1():
+    global user_data
+
+    user_data["fullname"] = request.form["fullname"]
+    user_data["username"] = request.form["username"]
+    user_data["email"] = request.form["email"]
+
+    user_data["address"] = request.form["address"]
+    user_data["PINcode"] = request.form["PINcode"]
+
+    signup_status = put_user_data(user_data)
+    if signup_status is True:
+        msg = "Successfully signed-up. Now you can LOGin"
+        return render_template("signup.html", status=msg)
+
+    elif signup_status is False:
+        msg = "Unable to create your account. Please try after some time."
+        return render_template("signup.html", status=msg)
+
+    else:
+        msg = "Something unexpected happened in signup route."
+        return render_template("signup.html", status=msg)
 
 
 

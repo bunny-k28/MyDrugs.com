@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
+
+    <title>MyDrugs•Login</title>
+</head>
+
+<link rel="stylesheet" href="../static/css/gen_style.css">
+<body>
+
+    <nav id="navbar-example2" class="navbar navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="#">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <img src="../../static/images/favicon.ico" width="50" height="50"
+                        class="d-inline-block align-text-top">
+                </div>
+                <div class="col-auto">
+                    <h3>
+                        <label>MyDrugs</label>
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <div class="row g-3">
+
+            <div class="col-auto">
+                <a type="button" class="btn btn-primary" href="/signin">
+                    <h4>
+                        Sign-In
+                    </h4>
+                </a>
+            </div>
+
+            <div class="col-auto">
+                <h3 style="color: white;">|</h3>
+            </div>
+
+            <div class="col-auto">
+                <a type="button" class="btn btn-outline-primary" href="/home">
+                    <h4>
+                        Home
+                    </h4>
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- <br><br> -->
+
+    <link rel="stylesheet" href="../static/css/signup.css">
+
+    {% if error.__len__() > 0 %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Signup Status!</strong> {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    {% if success.__len__() > 0 %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Signup Status!</strong> {{ success }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    <div class="signup-page container">
+        <form class="form-group" method="post">
+
+            <div class="mb-3 mt-5 col-6">
+                <label class="labels">
+                    <b>
+                        <h5>Full Name</h5>
+                    </b>
+                </label>
+
+                <input type="text" class="form-control input-box" name='fullname' 
+                aria-label="User's Full Name" aria-describedby="addon-wrapping" 
+                placeholder="Your Full Name" required>
+            </div>
+
+            <div class="mb-3 mt-5 col-6">
+                <label class="labels">
+                    <b>
+                        <h5>Username</h5>
+                    </b>
+                </label>
+
+                <input type="text" class="form-control input-box" name='username' 
+                aria-label="Username" aria-describedby="addon-wrapping" 
+                placeholder="Custom username" required>
+                
+            </div>
+
+            <div class="mb-3 mt-5 col-6">
+                <label class="labels">
+                    <b>
+                        <h5>Personal Email-ID</h5>
+                    </b>
+                </label>
+
+                <input type="email" class="form-control input-box" name='email' 
+                aria-label="Email ID" aria-describedby="addon-wrapping" 
+                placeholder="xyz@example.com" type="email"required>
+            </div>
+
+            <div class="container next-btn">
+                <button type="submit" class="btn btn-primary col-5">
+                    <b>NEXT</b>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

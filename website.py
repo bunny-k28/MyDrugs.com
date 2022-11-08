@@ -45,20 +45,18 @@ db.close()
 def redirect_to_home():
     return redirect(url_for("home"))
 
-
-# Home/index page route
 @http.route("/home")
 def home():
     return render_template("index.html")
 
 
 # login page route
-@http.route("/signin")
-def signin():
+@http.route("/login")
+def login():
     return render_template("login.html")
 
-@http.route("/signin", methods=["POST"]) 
-def signin_form():
+@http.route("/login", methods=["POST"]) 
+def login_form():
 
     session["active_user"] = request.form["username"]
     password = request.form["password"]
@@ -108,7 +106,7 @@ def signup_form1():
 @http.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("signin", status='logged-out'))
+    return redirect(url_for("login", status='logged-out'))
 
 
 

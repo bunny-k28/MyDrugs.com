@@ -3,12 +3,16 @@ import flask
 import dotenv
 import sqlite3
 
-from werkzeug.security import check_password_hash
 from flask import render_template, redirect, url_for, request, session
+from werkzeug.security import check_password_hash
+from datetime import timedelta
 from __init__ import *
 
 
 http = flask.Flask(__name__)
+http.secret_key = '3d9efc4wa651728'
+http.permanent_session_lifetime = timedelta(minutes=1)
+
 user_data = {"username": str, "password": str, 
              "email": str, "address": str, "PINcode": int}
 
@@ -56,16 +60,16 @@ def signin():
 @http.route("/signin", methods=["POST"]) 
 def signin_form():
 
-    username = request.form["username"]
+    session["active_user"] = request.form["username"]
     password = request.form["password"]
-    user_data = get_user_data(username)
+    user_data = get_user_data(session["active_user"])
     
     if user_data[0] is False:
         return render_template("login.html", error=user_data[-1])
 
     elif user_data[0] is True:
         if check_password_hash(user_data[-1], str(password)) is True:
-            return redirect(url_for("dashboard", user=f"@{username}"))
+            return redirect(url_for("dashboard", user=f'@{session["active_user"]}'))
 
         else: return render_template("login.html", error="Wrong password")
 

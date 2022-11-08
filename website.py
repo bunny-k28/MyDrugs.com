@@ -104,6 +104,13 @@ def signup_form1():
         return render_template("signup.html", status=msg)
 
 
+# logout route
+@http.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("signin", status='logged-out'))
+
+
 
 # executing statement
 if __name__ == "__main__":

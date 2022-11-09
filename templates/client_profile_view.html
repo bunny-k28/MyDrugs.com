@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
+
+    <title>MyDrugs•User Profile</title>
+</head>
+
+<link rel="stylesheet" href="../../static/css/gen_style.css">
+<body>
+
+    <nav id="navbar-example2" class="navbar navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="#">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <img src="../../static/images/favicon.ico" width="50" height="50"
+                        class="d-inline-block align-text-top">
+                </div>
+                <div class="col-auto">
+                    <h3>
+                        <label>MyDrugs</label>
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <div class="btn-group">
+
+            <img src="../../static/images/profile_frame_32px.png" class="dropdown-toggle-split mx-lg-5" 
+            data-bs-toggle="dropdown" aria-expanded="True">
+
+            <ul class="dropdown-menu bg-black bg-opacity-50">
+
+                <li>
+                    <a class="dropdown-item text-light" href="/dashboard/user:{{ username }}">dashboard</a>
+                </li>
+              
+                <li>
+                    <a class="dropdown-item text-light" href="/logout">logout</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+    <br><br><br>
+    <br><br><br>
+
+    <div class="container">
+        <div class="card bg-dark text-light">
+
+            <div class="card-header text-center">
+                <h3>User Information</h3>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    Username: <strong>@{{username}}</strong>
+                </h5>
+                <br>
+
+                <p class="card-text">
+                    Full Name: <strong>{{fullname}}</strong><br>
+                    Email: <strong>{{email}}</strong><br>
+                    Address: ⤵️<p>
+                                <strong>
+                                    {{address}}
+                                </strong>
+                            </p><br>
+                    Area Pin: <strong>{{pincode}}</strong><br>
+                </p><br>
+
+                <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

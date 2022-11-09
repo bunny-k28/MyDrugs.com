@@ -11,7 +11,7 @@ from __init__ import *
 
 http = flask.Flask(__name__)
 http.secret_key = '3d9efc4wa651728'
-http.permanent_session_lifetime = timedelta(minutes=1)
+http.permanent_session_lifetime = timedelta(days=1)
 
 user_data = {"username": str, "password": str, 
              "email": str, "address": str, "PINcode": int}
@@ -115,6 +115,32 @@ def logout():
 def dashboard(user):
     if "active_user" in session:
         return render_template("dashboard.html", username=user)
+
+    else: return redirect(url_for("logout"))
+
+
+# view profile redirector route
+@http.route("/profile/view")
+def view_profile_redirect():
+    if "active_user" in session:
+        return redirect(url_for("view_profile", 
+                                username=session["active_user"]))
+
+    else: return redirect(url_for("logout"))
+
+@http.route("/profile/view/user:<username>")
+def view_profile(username):
+    if "active_user" in session:
+            user_data = get_user_data(username, "all")
+            fullname = user_data[-1]["fullname"]
+            email = user_data[-1]["email"]
+
+            address = user_data[-1]["address"]
+            pincode = user_data[-1]["PINcode"]
+
+            return render_template('client_profile_view.html', 
+                                fullname=fullname, username=username, 
+                                email=email, address=address, pincode=pincode)
 
     else: return redirect(url_for("logout"))
 

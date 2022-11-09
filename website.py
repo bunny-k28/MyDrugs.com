@@ -33,7 +33,8 @@ sql = db.cursor()
 sql.execute("""CREATE TABLE IF NOT EXISTS 
             login_dets(username TEXT PRIMARY KEY, password_hash HASH)""")
 sql.execute("""CREATE TABLE IF NOT EXISTS 
-            user_dets(username TEXT PRIMARY KEY, userID UID, email TEXT, address TEXT, PINcode INT)""")
+            user_dets(username TEXT PRIMARY KEY, userID UID, 
+            fullname TEXT, email TEXT, address TEXT, PINcode INT)""")
 db.commit()
 
 sql.close()

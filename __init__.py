@@ -53,11 +53,12 @@ def get_user_data(username: str, data: str|None=...):
 
     data_dir = {'pswd_hash': password_hash, 
                 'userID': user_data[1], 
-                'email': user_data[2], 
-                'address': user_data[3], 
-                'PINcode': int(user_data[4])}
+                'fullname': user_data[2] ,
+                'email': user_data[3], 
+                'address': user_data[4], 
+                'PINcode': int(user_data[5])}
 
-    if type(data) is str: return (True, data_dir)
+    if data == "all": return (True, data_dir)
     else: return (True, password_hash)
 
 

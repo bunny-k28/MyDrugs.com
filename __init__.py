@@ -66,6 +66,7 @@ def put_user_data(user_data: dict):
     db = sqlite3.connect("Database/mydrugs_database.db")
     sql = db.cursor()
 
+    fullname = user_data["fullname"]
     username = user_data["username"]
     password_hash = generate_password_hash(user_data["password"], "sha256")
 
@@ -83,8 +84,8 @@ def put_user_data(user_data: dict):
         return False
 
     try:
-        sql.execute("""INSERT INTO user_dets(username, userID, email, address, PINcode) 
-                    VALUES(?, ?, ?, ?, ?)""", (username, userID, email, address, PINcode))
+        sql.execute("""INSERT INTO user_dets(username, userID, fullname, email, address, PINcode) 
+                    VALUES(?, ?, ?, ?, ?, ?)""", (username, userID, fullname, email, address, PINcode))
     except Exception as E: 
         print("Error while registering the user\nError: ", E)
         return False
@@ -93,3 +94,26 @@ def put_user_data(user_data: dict):
     db.close()
 
     return True
+
+
+def update_user_data(username: str, data: dict):
+    db = sqlite3.connect("Database/mydrugs_database.db")
+    sql = db.cursor()
+
+    try:
+        sql.execute(f"""UPDATE user_dets SET fullname='{str(data["fullname"])}' 
+                    WHERE username='{username}'""")
+        sql.execute(f"""UPDATE user_dets SET email='{str(data["email"])}' 
+                    WHERE username='{username}'""")
+        sql.execute(f"""UPDATE user_dets SET address='{str(data["address"])}' 
+                    WHERE username='{username}'""")
+        sql.execute(f"""UPDATE user_dets SET PINcode={int(data["PINcode"])} 
+                    WHERE username='{username}'""")
+        db.commit()
+
+        return True
+
+    except Exception as E: print("Error: ", E); return False
+
+    finally: sql.close(); db.close()
+

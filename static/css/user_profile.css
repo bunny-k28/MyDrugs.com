@@ -1,0 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.profile_card{
+    margin-right: 5cm;
+}
+
+.card_container{
+    padding-left: 5cm;
+}
+
+.form-control:hover{
+    background-color: black;
+    border-color: black;
+}
+
+.form-control:not(:hover){
+    background-color: black;
+    border-color: black;
+}

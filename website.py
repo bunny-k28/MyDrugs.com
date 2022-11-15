@@ -132,18 +132,42 @@ def view_profile_redirect():
 def view_profile(username):
     if "active_user" in session:
             user_data = get_user_data(username, "all")
-            fullname = user_data[-1]["fullname"]
-            email = user_data[-1]["email"]
-
-            address = user_data[-1]["address"]
-            pincode = user_data[-1]["PINcode"]
-
             return render_template('client_profile_view.html', 
-                                fullname=fullname, username=username, 
-                                email=email, address=address, pincode=pincode)
+                                username=username, user_data=user_data[-1])
 
     else: return redirect(url_for("logout"))
 
+@http.route("/profile/view/user:<username>", methods=["POST"])
+def edit_profile(username):
+    global user_data
+
+    user_data["fullname"] = str(request.form['fullname'])
+    user_data["address"] = str(request.form['address'])
+    user_data["PINcode"] = int(request.form['areaPIN'])
+    user_data["email"] = str(request.form['email'])
+
+    try:
+        status = update_user_data(username, user_data)
+        if status is True:
+            return render_template('client_profile_view.html', 
+                                    username=username, 
+                                    user_data=user_data, 
+                                    update_status="✅")
+        elif status is False:
+            print("Error updating user info")
+            user_data = get_user_data(username, "all")
+            return render_template('client_profile_view.html', 
+                                username=username, 
+                                user_data=user_data, 
+                                update_status="❌")
+
+    except Exception as E:
+        print("Error updating user info: ", E)
+        user_data = get_user_data(username, "all")
+        return render_template('client_profile_view.html', 
+                            username=username, 
+                            user_data=user_data, 
+                            update_status="❌")
 
 
 # executing statement

@@ -51,34 +51,112 @@
         </div>
     </nav>
 
-    <br><br><br>
-    <br><br><br>
+    <br><br>
 
-    <div class="container">
-        <div class="card bg-dark text-light">
+    <link rel="stylesheet" href="../../static/css/user_profile.css">
+    <div class="card_container container">
+        <div class="profile_card card bg-dark text-light">
 
-            <div class="card-header text-center">
-                <h3>User Information</h3>
+            <div class="card-header">
+                <h3 class="text-center">User Information</h3>
             </div>
 
             <div class="card-body">
-                <h5 class="card-title">
-                    Username: <strong>@{{username}}</strong>
-                </h5>
-                <br>
+                <div class="row g-3">
 
-                <p class="card-text">
-                    Full Name: <strong>{{fullname}}</strong><br>
-                    Email: <strong>{{email}}</strong><br>
-                    Address: ⤵️<p>
-                                <strong>
-                                    {{address}}
-                                </strong>
+                    <div class="col-auto">
+                        <br><br><br>
+                        <h5 class="card-title text-center">
+                            User's Profile Photo
+                        </h5>
+                        <br>
+                        <div class="container">
+                            <img src="../../static/images/profile_frame_256px.png">
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <br>
+                        <div class="container">
+                            <h5 class="card-title">
+                                Username: <strong>@{{username}}</strong>
+                            </h5>
+                            <br>
+                            <p class="card-text">
+                                <form class="form-group" method="post">
+
+                                    <div class="row g-1">
+                                        <div class="col-auto">
+                                            <h4>Full Name: </h4>
+                                        </div>
+                                        <div class="col-auto">
+                                            <strong>
+                                                <input type="text" class="form-control text-light" 
+                                                value="{{user_data['fullname']}}" name="fullname">
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-1">
+                                        <div class="col-auto">
+                                            <h4>Email: </h4>
+                                        </div>
+                                        <div class="col-auto">
+                                            <strong>
+                                                <input type="email" class="form-control text-light" 
+                                                value="{{user_data['email']}}" name="email">
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-1">
+                                        <div class="col-auto">
+                                            <h4>Address: </h4>
+                                        </div>
+                                        <div class="col-auto">
+                                            <textarea type="text" class="form-control text-light" name="address">{{user_data['address']}}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-1">
+                                        <div class="col-auto">
+                                            <h4>Area Pin: </h4>
+                                        </div>
+                                        <div class="col-auto">
+                                            <strong>
+                                                <input type="text" class="form-control text-light" 
+                                                value="{{user_data['PINcode']}}" name="areaPIN">
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <br><br>
+
+                                    <div class="row g-2">
+                                        <div class="col-auto">
+                                            <button class="btn btn-primary col-auto" type="submit">SAVE</button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <h3>{{update_status}}</h3>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a class="btn btn-primary col-auto" href="/dashboard/user:{{username}}">BACK</a>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </p><br>
-                    Area Pin: <strong>{{pincode}}</strong><br>
-                </p><br>
 
-                <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
         </div>

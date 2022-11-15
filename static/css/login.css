@@ -21,13 +21,18 @@
     padding-left: 12cm;
 }
 
-.input-box {
+.form-control:hover {
     background-color: black;
+    border-color: black;
+}
+
+.form-control:not(:hover){
+    background-color: black;
+    border-color: black;
 }
 
 .submit-btn {
     margin-left: 4%;
-
 }
 
 .spam-box {

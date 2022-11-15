@@ -21,8 +21,14 @@
     padding-left: 10cm;
 }
 
-.input-box {
+.form-control:hover {
     background-color: black;
+    border-color: black;
+}
+
+.form-control:not(:hover){
+    background-color: black;
+    border-color: black;
 }
 
 .next-btn {

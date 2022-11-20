@@ -75,32 +75,43 @@ def login_form():
 
 # signup page route
 @http.route("/signup")
-def signup_page1():
+def signup():
     return render_template("signup.html")
 
 @http.route("/signup", methods=["POST"])
-def signup_form1():
+def signup_form():
     global user_data
 
-    user_data["fullname"] = request.form["fullname"]
-    user_data["username"] = request.form["username"]
-    user_data["email"] = request.form["email"]
+    username = request.form["username"]
+    if user_existstance(username): return render_template("signup.html", error="Username already exists")
+    else: user_data["username"] = username
 
+    email = request.form["email"]
+    if ('@' and '.com') in email: user_data["email"] = email
+    else: return render_template('signup.html', error="Invalid email address")
+    
+    user_data["fullname"] = request.form["name"]
     user_data["address"] = request.form["address"]
-    user_data["PINcode"] = request.form["PINcode"]
+    user_data["PINcode"] = int(request.form["areapin"])
 
-    signup_status = put_user_data(user_data)
+    pswd = request.form["password"]
+    if len(pswd) >= 8:
+        if pswd == request.form["re-password"]: user_data["password"] = pswd
+        else: return render_template('signup.html', error="Password doesn't match")
+    else: return render_template('signup.html', error="Password is too short")
+
+    signup_status = register_user(user_data)
     if signup_status is True:
         msg = "Successfully signed-up. Now you can LOGin"
-        return render_template("signup.html", status=msg)
+        return render_template("signup.html", success=msg)
 
     elif signup_status is False:
         msg = "Unable to create your account. Please try after some time."
-        return render_template("signup.html", status=msg)
+        return render_template("signup.html", error=msg)
 
     else:
         msg = "Something unexpected happened in signup route."
-        return render_template("signup.html", status=msg)
+        return render_template("signup.html", error=msg)
 
 
 # logout route

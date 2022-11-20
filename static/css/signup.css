@@ -14,23 +14,23 @@
     font-style: oblique;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 
     'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: rgb(66, 14, 64);
-}
-
-.form-group {
-    padding-left: 10cm;
 }
 
 .form-control:hover {
-    background-color: black;
-    border-color: black;
+    background-color: white;
+    border-color: white;
 }
 
 .form-control:not(:hover){
-    background-color: black;
-    border-color: black;
+    background-color: white;
+    border-color: white;
 }
 
-.next-btn {
-    margin-left: 3%;
+.sub-con{
+    width: 20cm;
+}
+
+.alert{
+    margin-left: 18%;
+    width: 25cm;
 }

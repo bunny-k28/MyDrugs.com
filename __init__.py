@@ -62,30 +62,43 @@ def get_user_data(username: str, data: str|None=...):
     else: return (True, password_hash)
 
 
-def put_user_data(user_data: dict):
+def user_existstance(username: str):
     db = sqlite3.connect("Database/mydrugs_database.db")
     sql = db.cursor()
 
-    fullname = user_data["fullname"]
-    username = user_data["username"]
-    password_hash = generate_password_hash(user_data["password"], "sha256")
+    sql.execute("SELECT username FROM login_dets")
+    usernames = sql.fetchall()
 
-    userID = create_userID(username)
+    status = False
+
+    for ssid in usernames:
+        if ssid[0] == username:
+            status = True
+        else: pass
+
+    return status
+
+
+def register_user(user_data: dict):
+    db = sqlite3.connect("Database/mydrugs_database.db")
+    sql = db.cursor()
+
+    username = user_data["username"]
     email = user_data["email"]
+
+    fullname = user_data["fullname"]
     address = user_data["address"]
     PINcode = int(user_data["PINcode"])
+
+    userID = create_userID(username)
+    password_hash = generate_password_hash(user_data["password"], "sha256")    
 
     try:
         sql.execute("""INSERT INTO login_dets(username, password_hash) 
                     VALUES(?, ?)""", (username, password_hash))
-        db.commit()
-    except Exception as E: 
-        print("Error while registering the user\nError: ", E)
-        return False
-
-    try:
         sql.execute("""INSERT INTO user_dets(username, userID, fullname, email, address, PINcode) 
                     VALUES(?, ?, ?, ?, ?, ?)""", (username, userID, fullname, email, address, PINcode))
+        db.commit()
     except Exception as E: 
         print("Error while registering the user\nError: ", E)
         return False

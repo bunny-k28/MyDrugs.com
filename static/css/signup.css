@@ -1,13 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.signup-page {
-  background-image: url(../images/login_bg.jpg);
-  padding-top: 5cm;
-  padding-bottom: 5cm;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-blend-mode: darken;
-  border-style: initial;
+body{
+    background-image: url(../images/login_bg2.jpg);
 }
 
 .labels {
@@ -17,13 +11,13 @@
 }
 
 .form-control:hover {
-    background-color: white;
-    border-color: white;
+    background-color: black;
+    border-color: black;
 }
 
 .form-control:not(:hover){
-    background-color: white;
-    border-color: white;
+    background-color: black;
+    border-color: black;
 }
 
 .sub-con{

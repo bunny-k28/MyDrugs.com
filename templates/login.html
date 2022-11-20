@@ -56,7 +56,7 @@
         </div>
     </nav>
 
-    <br><br>
+    <br><br><br><br><br><br>
 
     <div class="container">
 
@@ -69,51 +69,55 @@
             </div>
         {% endif %}
 
-        <div class="login-page container">
-            <form class="form-group" method="post">
+        <div class="card" style="background-color: gray;">
+            <h3 class="card-header"  style="background-color: #454040;">Login</h3>
+            <div class="card-body">
+                <form class="form-group" method="post">
 
-                <div class="username row g-3">
-                    <div class="col-5">
-                        <div class="d-grid gap-2">
-                            <div class="input-group flex-nowrap">
-                                <span class="spam-box input-group-text" id="addon-wrapping">@</span>
-                                <input type="text" class="form-control" 
-                                placeholder="username" name="username" 
-                                aria-label="Username" aria-describedby="addon-wrapping">
+                    <div class="username row g-3">
+                        <div class="col-5">
+                            <div class="d-grid gap-2">
+                                <div class="input-group flex-nowrap">
+                                    <span class="spam-box input-group-text" id="addon-wrapping">@</span>
+                                    <input type="text" class="form-control" 
+                                    placeholder="username" name="username" 
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <br>
-                <div class="password row g-4">
-                    <div class="col-5">
-                        <div class="d-grid gap-2">
-                            <div class="input-group flex-nowrap">
-                                <span class="spam-box input-group-text" id="addon-wrapping">🔑</span>
-                                <input type="password" class="form-control" 
-                                placeholder="password" name="password" 
-                                aria-label="password" aria-describedby="addon-wrapping">
+                    <br>
+
+                    <div class="password row g-4">
+                        <div class="col-5">
+                            <div class="d-grid gap-2">
+                                <div class="input-group flex-nowrap">
+                                    <span class="spam-box input-group-text" id="addon-wrapping">🔑</span>
+                                    <input type="password" class="form-control" 
+                                    placeholder="password" name="password" 
+                                    aria-label="password" aria-describedby="addon-wrapping">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <h5 aria-label="pswd-reset link">
-                    <b>Forgot password?</b>
-                    <a class="link-danger" href="/password-reset"><b>reset here</b></a>
-                </h5>
+                    <br>
 
-                <br>
-                <div class="submit-btn">
-                    <button class="btn btn-primary col-4" type="submit">
-                        <h5 align=""center>Login</h5>
-                    </button>
-                </div>
+                    <h5 aria-label="pswd-reset link">
+                        <b>Forgot password?</b>
+                        <a class="link-danger" href="/password-reset"><b>reset here</b></a>
+                    </h5>
 
-            </form>
+                    <div>
+                        <button class="btn btn-primary col-4" type="submit">
+                            <h5 align=""center>Login</h5>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
-        <br>
     </div>
 
     <!-- Bootstrap Bundle with Popper -->

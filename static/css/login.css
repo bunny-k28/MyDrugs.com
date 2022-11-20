@@ -1,17 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.login-page {
-  background-image: url(../images/login_bg.jpg);
-  padding-top: 5cm;
-  padding-bottom: 5cm;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-blend-mode: darken;
-  border-style: initial;
+body{
+    background-image: url(../images/login_bg2.jpg);
 }
 
-.form-group {
-    padding-left: 12cm;
+.card{
+    margin-left: 6cm;
+    margin-right: 6cm;
+}
+
+.alert{
+    margin-left: 6cm;
+    margin-right: 6cm;
+}
+
+.form-group{
+    padding-left: 7cm;
 }
 
 .form-control:hover {
@@ -24,10 +28,6 @@
     background-color: black;
     border-color: black;
     color: white;
-}
-
-.submit-btn {
-    margin-left: 4%;
 }
 
 .spam-box {

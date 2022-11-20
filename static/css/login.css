@@ -10,13 +10,6 @@
   border-style: initial;
 }
 
-.label{
-    font-style: oblique;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 
-    'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: rgb(255, 0, 217);
-}
-
 .form-group {
     padding-left: 12cm;
 }
@@ -24,11 +17,13 @@
 .form-control:hover {
     background-color: black;
     border-color: black;
+    color: white;
 }
 
 .form-control:not(:hover){
     background-color: black;
     border-color: black;
+    color: white;
 }
 
 .submit-btn {

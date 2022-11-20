@@ -17,3 +17,14 @@
     background-color: black;
     border-color: black;
 }
+
+.dropdown-item:hover {
+    color: aqua;
+    background-color: black;
+    opacity: 50;
+}
+
+.dropdown-item:not(:hover) {
+    color: white;
+    opacity: 50;
+}

@@ -1,0 +1,12 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.dropdown-item:hover {
+    color: aqua;
+    background-color: black;
+    opacity: 50;
+}
+
+.dropdown-item:not(:hover) {
+    color: white;
+    opacity: 50;
+}

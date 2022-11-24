@@ -14,6 +14,7 @@ http.secret_key = '3d9efc4wa651728'
 http.permanent_session_lifetime = timedelta(days=1)
 
 code = ''
+safe_code = ''
 user_data = {"username": str, "password": str, 
              "email": str, "address": str, "PINcode": int}
 
@@ -59,6 +60,7 @@ def login():
 
 @http.route("/login", methods=["POST"]) 
 def login_form():
+    global safe_code
 
     session["active_user"] = request.form["username"]
     password = request.form["password"]
@@ -68,10 +70,26 @@ def login_form():
         return render_template("login.html", error=user_data[-1])
 
     elif user_data[0] is True:
-        if check_password_hash(user_data[-1], str(password)) is True:
+        if ((check_password_hash(user_data[-1], str(password)) is True) or (safe_code == password)):
+            safe_code = ''
             return redirect(url_for("dashboard", user=f'{session["active_user"]}'))
 
-        else: return render_template("login.html", error="Wrong password")
+        else: return render_template("login.html", 
+                                     error="Wrong password", 
+                                     pswd_invalid=True)
+
+
+# safe-code sender route
+@http.route("/send-safecode")
+def send_safecode():
+    global safe_code
+
+    mail = send_mail(session["active_user"], 'safe-code')
+    if mail[0] is True:
+        safe_code = mail[-1]
+        return redirect(url_for('login'))
+
+    else: return render_template('login.html', sc_status="Unable to send Safe-Code.")
 
 
 # password-reset user verification route
@@ -170,7 +188,8 @@ def signup_form():
 # logout route
 @http.route("/logout")
 def logout():
-    session.clear()
+    try: session.clear()
+    except Exception as E: pass
     return redirect(url_for("login", status='logged-out'))
 
 

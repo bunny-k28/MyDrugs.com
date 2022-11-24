@@ -64,7 +64,15 @@
 
         {% if error.__len__() > 0 %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Login Status!</strong> {{ error }}
+                <strong>Login Status!</strong> {{ error }} -- <a class="link-danger" 
+                href="/password-reset-redirector"><b>Reset Your Password Here</b></a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% if sc_status.__len__() > 0 %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Safe-Code Status!</strong> {{ sc_status }} -- <a class="link-danger" 
+                href="/password-reset-redirector"><b>Reset Your Password Here</b></a>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endif %}
@@ -75,12 +83,12 @@
                 <form class="form-group" method="post">
 
                     <div class="username row g-3">
-                        <div class="col-5">
+                        <div class="col-6">
                             <div class="d-grid gap-2">
                                 <div class="input-group flex-nowrap">
                                     <span class="spam-box input-group-text" id="addon-wrapping">@</span>
                                     <input type="text" class="form-control" 
-                                    placeholder="username" name="username" 
+                                    placeholder="username" name="username" value="{{input_box_value}}"
                                     aria-label="Username" aria-describedby="addon-wrapping" required>
                                 </div>
                             </div>
@@ -89,13 +97,13 @@
 
                     <br>
 
-                    <div class="password row g-4">
-                        <div class="col-5">
+                    <div class="password row g-3">
+                        <div class="col-6">
                             <div class="d-grid gap-2">
                                 <div class="input-group flex-nowrap">
                                     <span class="spam-box input-group-text" id="addon-wrapping">🔑</span>
                                     <input type="password" class="form-control" 
-                                    placeholder="password" name="password" 
+                                    placeholder="password/Safe-Code" name="password" 
                                     aria-label="password" aria-describedby="addon-wrapping" required>
                                 </div>
                             </div>
@@ -104,15 +112,24 @@
 
                     <br>
 
-                    <h5 aria-label="pswd-reset link">
-                        <b>Forgot password?</b>
-                        <a class="link-danger" href="/password-reset-redirector"><b>reset here</b></a>
-                    </h5>
-
                     <div>
-                        <button class="btn btn-primary col-4" type="submit">
-                            <h5 align=""center>Login</h5>
-                        </button>
+                        <div class="row g-3">
+                            <button class="btn btn-primary col-6" type="submit">
+                                <h5 align=""center>Login</h5>
+                            </button>
+                        </div>
+
+                        <br>
+
+                        {% if pswd_invalid==true %}
+                            <div class="row g-3">
+                                <a class="btn btn-outline-primary col-5" 
+                                type="submit" href="/send-safecode"
+                                onclick="alert('For Safe-Code click OK and check your registered E-mail inbox')">
+                                    <h5 align=""center>Login With Safe-Code</h5>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
 
                 </form>

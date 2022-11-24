@@ -1,7 +1,13 @@
 import os
 import random
 import string
+import dotenv
 import sqlite3
+import datetime
+import smtplib, ssl
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from werkzeug.security import generate_password_hash
 
@@ -71,10 +77,12 @@ def user_existstance(username: str):
 
     status = False
 
-    for ssid in usernames:
-        if ssid[0] == username:
-            status = True
-        else: pass
+    if usernames.__len__() > 0:
+        for ssid in usernames:
+            if ssid[0] == username:
+                status = True
+            else: pass
+    else: status = False
 
     return status
 
@@ -130,3 +138,81 @@ def update_user_data(username: str, data: dict):
 
     finally: sql.close(); db.close()
 
+
+def update_login_data(username: str, password: str):
+    db = sqlite3.connect("Database/mydrugs_database.db")
+    sql = db.cursor()
+
+    try:
+        password_hash = generate_password_hash(password, "sha256")
+        sql.execute(f"""UPDATE login_dets SET password_hash='{str(password_hash)}'
+                    WHERE username='{username}'""")
+        db.commit()
+
+        return True
+
+    except Exception as E: print("Error: ", E); return False
+    
+    finally: sql.close(); db.close()
+
+
+def generate_2FA_code(code_len: int=6, type: str="int"):
+    if type == "int": active_type_content = string.digits
+    if type == "str": active_type_content = string.ascii_letters
+    if type == "hybrid": active_type_content = string.ascii_letters + string.digits
+
+    code = ''.join(random.choice(active_type_content) 
+                   for _ in range(code_len))
+
+    return code
+
+
+def send_mail(username: str, type: str|None=...):
+    date = datetime.datetime.now().strftime('%d-%m-%Y')
+    time = datetime.datetime.now().strftime('%I:%M')
+
+    HOST_SSID = dotenv.get_key("Database/secrets.env", "HOST_SSID")
+    HOST_PSWD = dotenv.get_key("Database/secrets.env", "HOST_PSWD")
+
+    SMTP_SERVER = dotenv.get_key("Database/secrets.env", "SMTP_SERVER")
+    SERVER_PORT = dotenv.get_key("Database/secrets.env", "SERVER_PORT")
+
+    message = MIMEMultipart()
+    user_email = get_user_data(username, "all")[-1]["email"]
+
+    if type in ["2FA", "pswd-reset", None]: 
+        code = generate_2FA_code()
+        body = f"""<html>
+<h3>Your 2FA Code for <em><u>Password Reset</u></em> is: </h3>
+<spam><h1 style="background-color: yellow;"><b>{code}</b></h1></spam>
+<h3>Password-Reset Request generated on {date} at {time}</h3>
+</html>"""
+        message["Subject"] = 'Password Reset Request for MyDrugs Account'
+
+    elif type in ["login-2", "forgot-pswd-login", "safe-code"]:
+        code = generate_2FA_code(16, "str")
+        body = f"""<html>
+<h3>Your safe code for <em><u>Loggin-In</u></em> to MyDrugs account is: </h3>
+<spam><h1 style="background-color: yellow;"><b>{code}</b></h1></spam>
+<h3>Safe-Code login Request generated on {date} at {time}</h3>
+</html>"""
+        message["Subject"] = 'Login Safe-Code for MyDrugs Account'
+
+    message["From"] = HOST_SSID
+    message["To"] = user_email
+
+    try:
+        message.attach(MIMEText(body, "html"))
+        
+        text = message.as_string()
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL(SMTP_SERVER, int(SERVER_PORT), context=context) as server:
+            server.login(HOST_SSID, HOST_PSWD)
+            server.sendmail(HOST_SSID, user_email, text)
+
+        return (True, code)
+
+    except Exception as E: 
+        print("Error while sending email: ", E)
+        return (False)

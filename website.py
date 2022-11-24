@@ -13,6 +13,7 @@ http = flask.Flask(__name__)
 http.secret_key = '3d9efc4wa651728'
 http.permanent_session_lifetime = timedelta(days=1)
 
+code = ''
 user_data = {"username": str, "password": str, 
              "email": str, "address": str, "PINcode": int}
 
@@ -71,6 +72,58 @@ def login_form():
             return redirect(url_for("dashboard", user=f'{session["active_user"]}'))
 
         else: return render_template("login.html", error="Wrong password")
+
+
+# password-reset user verification route
+@http.route('/password-reset-redirector')
+def password_reset_redirector():
+    return redirect(url_for("pswd_reset_userVerification"))
+
+@http.route("/password-reset/user-verification")
+def pswd_reset_userVerification():
+    return render_template('user_verification.html')
+
+@http.route("/password-reset/user-verification", methods=["POST"])
+def userVerification_form():
+    global code
+
+    session["active_user"] = request.form["username"]
+    exist = user_existstance(session["active_user"])
+    if exist is True:
+        mail = send_mail(session["active_user"], "2FA")
+        if mail[0] is True:
+            code = mail[-1]
+            return redirect(url_for("password_reset", for_user=session["active_user"]))
+
+        elif mail[0] is False:
+            return render_template("user_verification.html", status="⚠️ Could not proceed due to technical issue!")
+            
+    elif exist is False: return render_template('user_verification.html', status="❌ Invalid username!")
+
+
+# password reset route
+@http.route("/password-reset")
+def password_reset():
+    if "active_user" in session: return render_template('password_reset.html')
+    else: return render_template('password_reset.html', validation=False)
+
+@http.route("/password-reset", methods=["POST"])
+def password_reset_form():
+    global code
+
+    pswd = request.form["new_password"]
+    twoFA_code = request.form["2FA"]
+
+    if twoFA_code == code: pass
+    else: return render_template('password_reset.html', error="You entered wrong 2FA code!")
+
+    if len(pswd) >= 8:
+        if pswd == request.form["confirm_password"]:
+            if update_login_data(session["active_user"], pswd) is True:
+                session.clear(); code = ''
+                return render_template('password_reset.html', success="Now you can ", status="✅")
+        else: return render_template('password_reset.html', error="Password doesn't match", status="❌")
+    else: return render_template('password_reset.html', error="Password is too short", status="❌")
 
 
 # signup page route

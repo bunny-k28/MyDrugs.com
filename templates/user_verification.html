@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
+
+    <title>MyDrugs•User-Verification</title>
+</head>
+
+<link rel="stylesheet" href="../static/css/gen_style.css">
+
+<body>
+    <nav id="navbar-example2" class="navbar navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="#">
+			<div class="row g-3">
+				<div class="col-auto">
+					<img src="../../static/images/favicon.ico" width="50" height="50"
+						class="d-inline-block align-text-top">
+				</div>
+				<div class="col-auto">
+					<h3>
+						<label>MyDrugs</label>
+					</h3>
+				</div>
+			</div>
+		</a>
+
+        <div class="row g-3">
+
+            <div class="col-auto">
+                <a type="button" class="btn btn-primary" href="/login">
+                    <h4>
+                        Login
+                    </h4>
+                </a>
+            </div>
+
+            <div class="col-auto">
+                <h3 style="color: white;">|</h3>
+            </div>
+
+            <div class="col-auto">
+                <a type="button" class="btn btn-outline-primary" href="/signup">
+                    <h4>
+                        Sign-Up
+                    </h4>
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <br><br><br><br>
+
+    <h4 align="center" style="padding-right: 5cm" id="redirect-label"></h4>
+
+    <br><br><br><br>
+    <br><br><br><br>
+
+    <link rel="stylesheet" href="../static/css/password_reset.css">
+    <div class="container">
+        <form class="form-group row g-3" method="post">
+            <div class="col-4">
+                <label class="visually-hidden"></label>
+            </div>
+            
+            <div class="col-auto">
+                <input type="text" class="form-control mx-xl-1" id="inputBox"
+                name="username" placeholder="@Username" required>
+            </div>
+            
+            <div class="col-auto">
+                <button type="submit" id="submit-btn" class="btn btn-primary mb-3 submit-btn" 
+                onclick="flashRedirect()"><b>VERIFY</b></button>
+            </div>
+            
+            <div class="col-auto">
+                {% if status.__len__() > 0 %}
+                    <h2>{{ status }}</h2>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        function flashRedirect() {
+            var data = document.getElementById('inputBox');
+            if (data.value) {
+                document.getElementById('submit-btn').innerText = "Verifying...";
+            }
+        }
+    </script>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

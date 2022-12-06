@@ -41,7 +41,11 @@
             <ul class="dropdown-menu bg-black bg-opacity-50">
 
                 <li>
-                    <a class="dropdown-item" href="/profile/view">view profile</a>
+                    <a class="dropdown-item" href="/dashboard/cart/user:{{ username }}">my cart</a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="/profile/view">profile</a>
                 </li>
                 
                 <li>
@@ -52,6 +56,53 @@
 
         </div>
     </nav>
+
+    <br>
+
+    <div class="container-fluid row g-4 product-box">
+        {% for item in products %}
+            <section class="col-auto">
+                <div class="card bg-black border-white" style="width: 18rem;">
+                    <img src="{{ products[item]['item_img'] }}" class="card-img-top" alt="product image">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><b>{{ products[item]['item_name'] }}</b></h5>
+
+                        <br>
+
+                        <p class="card-text">
+                            Price: ₹{{ products[item]['item_price'] }}<br>
+                            Quantity: {{ products[item]['item_quantity'] }}<br>
+                            {% if products[item]['item_status'] == "In Stock" %}
+                                <h4 class="text-end" style="color: green">
+                                    {{ products[item]['item_status'] }}
+                                </h4>
+                            {% else %}
+                                <h4 class="text-end" style="color: red">
+                                    {{ products[item]['item_status'] }}
+                                </h4>
+                            {% endif %}
+                        </p>
+
+                        <hr>
+
+                        <div class="row g-1">
+                            <div class="col-auto">
+                                <a href="{{ products[item]['buy_link'] }}" class="btn btn-success">BUY NOW</a>
+                            </div>
+
+                            <div class="col-1"></div>
+
+                            <div class="col-auto">
+                                <a href="{{ products[item]['add_to_cart_link'] }}" class="btn btn-outline-warning">ADD TO CARD</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endfor %}
+    </div>
+
+    <br><br>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

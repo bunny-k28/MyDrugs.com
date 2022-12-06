@@ -1,4 +1,5 @@
 import os
+import json
 import random
 import string
 import dotenv
@@ -66,6 +67,14 @@ def get_user_data(username: str, data: str|None=...):
 
     if data == "all": return (True, data_dir)
     else: return (True, password_hash)
+
+
+def read_json(path: str, _for: str="products"):
+    with open(path, 'r') as jfile:
+        jdata = json.load(jfile)
+
+    if _for == "products": return jdata
+    else: return jdata[_for]
 
 
 def user_existstance(username: str):
@@ -198,7 +207,7 @@ def send_mail(username: str, type: str|None=...):
 </html>"""
         message["Subject"] = 'Login Safe-Code for MyDrugs Account'
 
-    message["From"] = HOST_SSID
+    message["From"] = "MyDrugs.com"
     message["To"] = user_email
 
     try:

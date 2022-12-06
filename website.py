@@ -3,7 +3,7 @@ import flask
 import dotenv
 import sqlite3
 
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, url_for, jsonify, request, session
 from werkzeug.security import check_password_hash
 from datetime import timedelta
 from __init__ import *
@@ -173,6 +173,9 @@ def signup_form():
 
     signup_status = register_user(user_data)
     if signup_status is True:
+        try: open(f'Database/store/cart/{username}.json', 'x').close()
+        except Exception as E: pass
+
         msg = "Successfully signed-up. Now you can LOGin"
         return render_template("signup.html", success=msg)
 
@@ -197,7 +200,9 @@ def logout():
 @http.route("/dashboard/user:<user>")
 def dashboard(user):
     if "active_user" in session:
-        return render_template("dashboard.html", username=user)
+        data = read_json("Database/store/products.json")
+        return render_template("dashboard.html", 
+                            username=user, products=data)
 
     else: return redirect(url_for("logout"))
 

@@ -207,6 +207,26 @@ def dashboard(user):
     else: return redirect(url_for("logout"))
 
 
+@http.route("/cart/add", methods=["POST"])
+def add_to_cart():
+    if "active_user" in session:
+        try:
+            pid = request.form["product_id"]
+            pref = request.form["product_ref"]
+            quantity = int(request.form["quantity"])
+            data = read_json("Database/store/products.json")
+
+            if pid and pref and (request.method == "POST"):
+                if add_item_to_cart(session["active_user"], pid, quantity, pref):
+                    return render_template('dashboard.html', products=data, status=True)
+                else: return render_template('dashboard.html', products=data, status=False)
+            else: pass
+
+        except Exception as E: return render_template('dashboard.html', products=data, status=False)
+
+    else: return redirect(url_for("logout"))
+
+
 # view profile redirector route
 @http.route("/profile/view")
 def view_profile_redirect():

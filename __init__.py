@@ -148,6 +148,26 @@ def update_user_data(username: str, data: dict):
     finally: sql.close(); db.close()
 
 
+def add_item_to_cart(username: str, product_id: str, quantity: int=1, product_ref: str="item1"):
+    try:
+        file_name = f"Database/store/cart/{username}.json"
+        with open(file_name, 'r') as jfile: data = json.load(jfile)
+
+        data["cart_items"] += [
+            {
+                "product_id": product_id, 
+                "quantity": int(quantity),
+                "ref": product_ref
+                }
+            ]
+
+        with open(file_name, 'w') as jfile: json.dump(data, jfile, indent=4)
+
+        return True
+
+    except Exception: return False
+
+
 def update_login_data(username: str, password: str):
     db = sqlite3.connect("Database/mydrugs_database.db")
     sql = db.cursor()

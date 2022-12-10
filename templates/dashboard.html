@@ -14,6 +14,7 @@
 </head>
 
 <link rel="stylesheet" href="../../static/css/gen_style.css">
+
 <body>
 
     <nav id="navbar-example2" class="navbar navbar-dark bg-dark px-3">
@@ -35,8 +36,8 @@
 
         <div class="btn-group">
 
-            <img src="../../static/images/profile_frame_32px.png" class="dropdown-toggle-split mx-lg-5" 
-            data-bs-toggle="dropdown" aria-expanded="True">
+            <img src="../../static/images/profile_frame_32px.png" class="dropdown-toggle-split mx-lg-5"
+                data-bs-toggle="dropdown" aria-expanded="True">
 
             <ul class="dropdown-menu bg-black bg-opacity-50">
 
@@ -47,7 +48,7 @@
                 <li>
                     <a class="dropdown-item" href="/profile/view">profile</a>
                 </li>
-                
+
                 <li>
                     <a class="dropdown-item" href="/logout">logout</a>
                 </li>
@@ -57,48 +58,81 @@
         </div>
     </nav>
 
+    {% if status == True %}
+        <div class="alert alert-success alert-dismissible fade show mx-5" role="alert">
+            <strong>Item successfully added to cart</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if status == False %}
+        <div class="alert alert-warning alert-dismissible fade show mx-5" role="alert">
+            <strong>Unable to add the item to the cart</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
     <br>
 
     <div class="container-fluid row g-4 product-box">
         {% for item in products %}
-            <section class="col-auto">
-                <div class="card bg-black border-white" style="width: 18rem;">
-                    <img src="{{ products[item]['item_img'] }}" class="card-img-top" alt="product image">
-                    <div class="card-body">
-                        <h5 class="card-title text-center"><b>{{ products[item]['item_name'] }}</b></h5>
+        <section class="col-auto">
+            <div class="card bg-black border-white" style="width: 18rem;">
+                <img src="{{ products[item]['item_img'] }}" class="card-img-top" alt="product image">
+                <div class="card-body">
+                    <h5 class="card-title text-center"><b>{{ products[item]['item_name'] }}</b></h5>
 
-                        <br>
+                    <br>
 
-                        <p class="card-text">
-                            Price: ₹{{ products[item]['item_price'] }}<br>
-                            Quantity: {{ products[item]['item_quantity'] }}<br>
-                            {% if products[item]['item_status'] == "In Stock" %}
-                                <h4 class="text-end" style="color: green">
-                                    {{ products[item]['item_status'] }}
-                                </h4>
-                            {% else %}
-                                <h4 class="text-end" style="color: red">
-                                    {{ products[item]['item_status'] }}
-                                </h4>
-                            {% endif %}
-                        </p>
+                    <p class="card-text">
+                        Price: ₹{{ products[item]['item_price'] }}<br>
+                        Quantity: {{ products[item]['item_quantity'] }}<br>
+                        {% if products[item]['item_status'] == "In Stock" %}
+                    <h4 class="text-end" style="color: green">
+                        {{ products[item]['item_status'] }}
+                    </h4>
+                    {% else %}
+                    <h4 class="text-end" style="color: red">
+                        {{ products[item]['item_status'] }}
+                    </h4>
+                    {% endif %}
+                    </p>
 
-                        <hr>
+                    <hr>
 
-                        <div class="row g-1">
-                            <div class="col-auto">
-                                <a href="{{ products[item]['buy_link'] }}" class="btn btn-success">BUY NOW</a>
-                            </div>
+                    <form action="{{url_for('add_to_cart')}}" class="form-group row g-1" method="post">
+                        <input type="hidden" name="product_id" value="{{products[item]['item_id']}}">
+                        <input type="hidden" name="product_ref" value="{{item}}">
 
-                            <div class="col-1"></div>
+                        <div class="col-auto">
+                            <a href="#" class="btn btn-success">BUY</a>
+                        </div>
 
-                            <div class="col-auto">
-                                <a href="{{ products[item]['add_to_cart_link'] }}" class="btn btn-outline-warning">ADD TO CARD</a>
+                        <div class="col-1"></div>
+
+                        <div class="col-auto">
+                            <div class="row g-1">
+                                <div class="col-auto">
+                                    <link rel="stylesheet" href="../static/css/dashboard.css">
+                                    <select type="number" id="select-box" name="quantity" class="form-select">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-outline-warning">
+                                        Add To Cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </section>
+            </div>
+        </section>
         {% endfor %}
     </div>
 

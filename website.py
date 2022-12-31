@@ -243,7 +243,7 @@ def add_to_cart():
             pdata = read_json(f'Database/store/products.json')
 
             if (pid, pName, pImgUrl, quantity, pStatus) and (request.method == "POST"):
-                if add_item_to_cart(user, pid, idata):
+                if update_cart(user, pid, "add", idata):
                     cart_data = read_json(f'Database/store/cart/{user}.json')
                     if cart_data: count = cart_data.__len__()
 
@@ -251,9 +251,26 @@ def add_to_cart():
                 else: return render_template('dashboard.html', products=pdata, status=False, item_count=count)
             else: pass
 
-        except Exception as E: return render_template('dashboard.html', products=pdata, status=False, item_count=count+1)
+        except Exception as E: return render_template('dashboard.html', products=pdata, status=False, item_count=count)
 
     else: return redirect(url_for("logout"))
+
+
+# pop-from-cart route
+@http.route("/cart/remove", methods=["POST"])
+def pop_from_cart():
+    if "active_user" in session:
+        user = session["active_user"]
+        pid = request.form['pid']
+
+        try: 
+            if pid and (request.method == "POST"):
+                if update_cart(user, pid, 'pop'):
+                    cdata = read_json(f'Database/store/cart/{user}.json')
+                    return render_template('view_cart.html', username=user, status=True, cart_items=cdata)
+                else: return render_template('view_cart.html', username=user, status=False, cart_items=cdata)
+            else: pass
+        except: return render_template('view_cart.html', username=user, status=False, cart_items=cdata)
 
 
 # view cart page route

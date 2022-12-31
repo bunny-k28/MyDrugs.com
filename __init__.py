@@ -148,15 +148,19 @@ def update_user_data(username: str, data: dict):
     finally: sql.close(); db.close()
 
 
-def add_item_to_cart(username: str, pid: str, idata: dict):
-    try:
-        file_name = f"Database/store/cart/{username}.json"
+def update_cart(username: str, pid: str, method: str, idata=dict):
+    file_name = f"Database/store/cart/{username}.json"
 
+    try:
         with open(file_name, 'r') as UCJfile: cart_data = json.load(UCJfile)
-        if pid in cart_data.keys():
-            cart_data[pid]["product_quantity"] += idata["product_quantity"]
-            cart_data[pid]["total_price"] += int(idata["product_quantity"] * idata["product_price"])
-        else: cart_data[pid] = idata
+
+        if method == 'add':
+            if pid in cart_data.keys():
+                cart_data[pid]["product_quantity"] += idata["product_quantity"]
+                cart_data[pid]["total_price"] += int(idata["product_quantity"] * idata["product_price"])
+            else: cart_data[pid] = idata
+
+        elif method in ['remove', 'pop']: cart_data.pop(pid)
 
         with open(file_name, 'w') as jfile: json.dump(cart_data, jfile, indent=4)
 

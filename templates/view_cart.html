@@ -66,43 +66,69 @@
     </div>
     {% endif %}
 
-    <div class="container-fluid text-center row g-4">
-        {% for item in cart_items %}
-            <section class="col-auto">
-                <div class="card mb-3 bg-dark border-white" style="max-width: 540px;">
-                    <div class="row g-0">
+    {% if status == True %}
+        <div class="alert alert-success alert-dismissible fade show mx-5" role="alert">
+            <strong>Item successfully removed from the cart</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if status == False %}
+        <div class="alert alert-warning alert-dismissible fade show mx-5" role="alert">
+            <strong>Unable to remove the item from the cart</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
 
-                        <div class="col-md-4">
-                            <img src="{{ cart_items[item]['product_img'] }}" style="height: 8rem; width: 8rem;"
-                            class="img-fluid rounded-start" alt="product image">
-                        </div>
+    <div class="container-fluid row g-4 item-box" style="padding-left: 5cm;">
+        {% if cart_items.__len__() > 0 %}
 
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                
-                                <h4 class="card-title">{{ cart_items[item]['product_name'] }}</h4>
-                                <p class="card-text">
-                                    Price: ₹{{ cart_items[item]['product_price'] }}<br>
-                                    Quantity Ordered: {{ cart_items[item]['product_quantity'] }}<br><br>
-                                    Total Price for this: ₹{{ cart_items[item]['total_price']}}
-                                    {% if cart_items[item]['product_status'] == "In Stock" %}
-                                        <h4 class="text-end" style="color: green">
-                                            {{ cart_items[item]['product_status'] }}
-                                        </h4>
-                                    {% else %}
-                                        <h4 class="text-end" style="color: red">
-                                            {{ cart_items[item]['product_status'] }}
-                                        </h4>
-                                    {% endif %}
-                                </p>
+            {% for item in cart_items %}
+                <section class="col-auto">
+                    <div class="card mb-3 bg-dark border-white" style="max-width: 540px;">
+                        <div class="row g-0">
 
+                            <div class="col-md-4">
+                                <img src="{{ cart_items[item]['product_img'] }}"
+                                class="img-fluid rounded-start" alt="product image">
                             </div>
+
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    
+                                    <h4 class="card-title">{{ cart_items[item]['product_name'] }}</h4>
+                                    <p class="card-text">
+                                        Price: ₹{{ cart_items[item]['product_price'] }}<br>
+                                        Quantity Ordered: {{ cart_items[item]['product_quantity'] }}<br><br>
+                                        Total Price for this: ₹{{ cart_items[item]['total_price']}}
+                                        {% if cart_items[item]['product_status'] == "In Stock" %}
+                                            <h4 class="text-end" style="color: green">
+                                                {{ cart_items[item]['product_status'] }}
+                                            </h4>
+                                        {% else %}
+                                            <h4 class="text-end" style="color: red">
+                                                {{ cart_items[item]['product_status'] }}
+                                            </h4>
+                                        {% endif %}
+                                    </p>
+
+                                    <form action="{{url_for('pop_from_cart')}}" class="form-group row g-1" method="post">
+                                        <input type="hidden" name="pid" value="{{ item }}">
+                                        <button type="submit" class="btn btn-outline-danger">DELETE ITEM</button>
+                                    </form>
+                                </div>
+                            </div>
+                        
                         </div>
-                    
                     </div>
-                </div>
-            </section><br>
-        {% endfor %}
+                </section><br>
+            {% endfor %}
+
+        {% else %}
+            <div class="container" style="padding-left: 8cm; padding-top: 2cm;">
+                <img src="../static/images/empty-cart.png" 
+                alt="mt-cart-image">
+            </div>
+        {% endif %}
     </div>
 
     <!-- Bootstrap Bundle with Popper -->

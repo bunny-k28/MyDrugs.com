@@ -173,7 +173,11 @@ def signup_form():
 
     signup_status = register_user(user_data)
     if signup_status is True:
-        try: open(f'Database/store/cart/{username}.json', 'x').close()
+        try: 
+            open(f'Database/store/cart/{username}.json', 'x').close()
+            with open(f'Database/store/cart/{username}.json', 'w') as ujfile:
+                json.dump({}, ujfile, indent=4)
+
         except Exception as E: pass
 
         msg = "Successfully signed-up. Now you can LOGin"
@@ -199,31 +203,75 @@ def logout():
 # dashboard page route
 @http.route("/dashboard/user:<user>")
 def dashboard(user):
+    count = 0
+
     if "active_user" in session:
         data = read_json("Database/store/products.json")
+        cart_data = read_json(f'Database/store/cart/{session["active_user"]}.json')
+        if cart_data:
+            count = cart_data.__len__()
+
         return render_template("dashboard.html", 
-                            username=user, products=data)
+                            username=user, products=data, 
+                            item_count=count)
 
     else: return redirect(url_for("logout"))
 
 
+# add-to-cart route
 @http.route("/cart/add", methods=["POST"])
 def add_to_cart():
     if "active_user" in session:
         try:
-            pid = request.form["product_id"]
-            pref = request.form["product_ref"]
+            pid = request.form["pid"]
+            pName = request.form["pname"]
+            pImgUrl = request.form["pimg"]
             quantity = int(request.form["quantity"])
-            data = read_json("Database/store/products.json")
+            pPrice = int(request.form["pprice"])
+            tPrice = quantity * pPrice
+            pStatus = request.form["pstatus"]
 
-            if pid and pref and (request.method == "POST"):
-                if add_item_to_cart(session["active_user"], pid, quantity, pref):
-                    return render_template('dashboard.html', products=data, status=True)
-                else: return render_template('dashboard.html', products=data, status=False)
+            user = session["active_user"]
+
+            idata = {"product_name": pName, 
+                     "product_img": pImgUrl, 
+                     "product_quantity": quantity,
+                     "product_price": pPrice,
+                     "total_price": tPrice,
+                     "product_status": pStatus}
+
+            pdata = read_json(f'Database/store/products.json')
+
+            if (pid, pName, pImgUrl, quantity, pStatus) and (request.method == "POST"):
+                if add_item_to_cart(user, pid, idata):
+                    cart_data = read_json(f'Database/store/cart/{user}.json')
+                    if cart_data: count = cart_data.__len__()
+
+                    return render_template('dashboard.html', products=pdata, status=True, item_count=count)
+                else: return render_template('dashboard.html', products=pdata, status=False, item_count=count)
             else: pass
 
-        except Exception as E: return render_template('dashboard.html', products=data, status=False)
+        except Exception as E: return render_template('dashboard.html', products=pdata, status=False, item_count=count+1)
 
+    else: return redirect(url_for("logout"))
+
+
+# view cart page route
+@http.route("/cart/view")
+def view_cart():
+    if "active_user" in session:
+        user = session["active_user"]
+        pdata = read_json('Database/store/products.json')
+        cdata = read_json(f'Database/store/cart/{user}.json', "cart")
+
+        try:
+            return render_template('view_cart.html', username=user, 
+                                products=pdata, cart_items=cdata)
+
+        except Exception as E:
+            print(E)
+            return render_template('view_cart.html', username=user, 
+                                    error="Unable to load cart items")
     else: return redirect(url_for("logout"))
 
 

@@ -69,12 +69,12 @@ def get_user_data(username: str, data: str|None=...):
     else: return (True, password_hash)
 
 
-def read_json(path: str, _for: str="products"):
+def read_json(path: str, key: str="key"):
     with open(path, 'r') as jfile:
         jdata = json.load(jfile)
 
-    if _for == "products": return jdata
-    else: return jdata[_for]
+        if key == "key": return jdata
+        else: return jdata[key]
 
 
 def user_existstance(username: str):
@@ -148,20 +148,17 @@ def update_user_data(username: str, data: dict):
     finally: sql.close(); db.close()
 
 
-def add_item_to_cart(username: str, product_id: str, quantity: int=1, product_ref: str="item1"):
+def add_item_to_cart(username: str, pid: str, idata: dict):
     try:
         file_name = f"Database/store/cart/{username}.json"
-        with open(file_name, 'r') as jfile: data = json.load(jfile)
 
-        data["cart_items"] += [
-            {
-                "product_id": product_id, 
-                "quantity": int(quantity),
-                "ref": product_ref
-                }
-            ]
+        with open(file_name, 'r') as UCJfile: cart_data = json.load(UCJfile)
+        if pid in cart_data.keys():
+            cart_data[pid]["product_quantity"] += idata["product_quantity"]
+            cart_data[pid]["total_price"] += int(idata["product_quantity"] * idata["product_price"])
+        else: cart_data[pid] = idata
 
-        with open(file_name, 'w') as jfile: json.dump(data, jfile, indent=4)
+        with open(file_name, 'w') as jfile: json.dump(cart_data, jfile, indent=4)
 
         return True
 

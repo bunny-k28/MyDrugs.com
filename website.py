@@ -261,17 +261,17 @@ def add_to_cart():
 def view_cart():
     if "active_user" in session:
         user = session["active_user"]
-        pdata = read_json('Database/store/products.json')
-        cdata = read_json(f'Database/store/cart/{user}.json', "cart")
+        cdata = read_json(f'Database/store/cart/{user}.json')
 
         try:
             return render_template('view_cart.html', username=user, 
-                                products=pdata, cart_items=cdata)
+                                   cart_items=cdata)
 
         except Exception as E:
             print(E)
             return render_template('view_cart.html', username=user, 
                                     error="Unable to load cart items")
+
     else: return redirect(url_for("logout"))
 
 

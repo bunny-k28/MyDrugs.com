@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
+
+    <title>MyDrugs•Cart</title>
+</head>
+
+<link rel="stylesheet" href="../static/css/gen_style.css">
+
+<body>
+
+    <nav id="navbar-example2" class="navbar navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="#">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <img src="../../static/images/favicon.ico" width="50" height="50"
+                        class="d-inline-block align-text-top">
+                </div>
+                <div class="col-auto">
+                    <h3>
+                        <label>MyDrugs</label>
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <div class="row g-3">
+
+            <div class="col-auto">
+                <a type="button" class="btn btn-outline-warning" href="/cart/checkout">
+                    <h4>
+                        Check-out
+                    </h4>
+                </a>
+            </div>
+
+            <div class="col-auto">
+                <h3 style="color: #ffffff;">|</h3>
+            </div>
+
+            <div class="col-auto">
+                <a type="button" class="btn btn-primary" href="/dashboard/user:{{ username }}">
+                    <h4>
+                        Back
+                    </h4>
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <br>
+
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show mx-5" role="alert">
+        <strong>{{error}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <div class="container-fluid text-center row g-4">
+        {% for item in cart_items %}
+            <section class="col-auto">
+                <div class="card mb-3 bg-dark border-white" style="max-width: 540px;">
+                    <div class="row g-0">
+
+                        <div class="col-md-4">
+                            <img src="{{ cart_items[item]['product_img'] }}" style="height: 8rem; width: 8rem;"
+                            class="img-fluid rounded-start" alt="product image">
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                
+                                <h4 class="card-title">{{ cart_items[item]['product_name'] }}</h4>
+                                <p class="card-text">
+                                    Price: ₹{{ cart_items[item]['product_price'] }}<br>
+                                    Quantity Ordered: {{ cart_items[item]['product_quantity'] }}<br><br>
+                                    Total Price for this: ₹{{ cart_items[item]['total_price']}}
+                                    {% if cart_items[item]['product_status'] == "In Stock" %}
+                                        <h4 class="text-end" style="color: green">
+                                            {{ cart_items[item]['product_status'] }}
+                                        </h4>
+                                    {% else %}
+                                        <h4 class="text-end" style="color: red">
+                                            {{ cart_items[item]['product_status'] }}
+                                        </h4>
+                                    {% endif %}
+                                </p>
+
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </section><br>
+        {% endfor %}
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

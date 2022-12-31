@@ -15,3 +15,14 @@
     background-color: black;
     color: white;
 }
+
+#profile-btn {
+    background-color: rgb(33, 37, 41); 
+    border-color: rgb(33, 37, 41);
+    border-radius: 5cm;
+    width: 1.5cm
+}
+
+#profile-btn:active {
+    border-color: rgb(33, 37, 41);
+}

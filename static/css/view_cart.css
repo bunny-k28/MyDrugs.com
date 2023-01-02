@@ -1,0 +1,20 @@
+#product-img {
+    height: 4cm;
+    width: 8cm;
+}
+
+.item-box {
+    padding-left: 6.5cm;
+}
+
+.card {
+    max-width: 540px;
+    background: rgba(84, 75, 75, 0.233); 
+    border-color: white;
+    border-style: groove;
+}
+
+#mt-cart {
+    padding-left: 8cm;
+    padding-top: 2cm;
+}

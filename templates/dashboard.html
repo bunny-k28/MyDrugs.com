@@ -82,7 +82,8 @@
         {% for item in products %}
         <section class="col-auto">
             <div class="card bg-black border-white" style="width: 18rem;">
-                <img src="{{ products[item]['product_img'] }}" class="card-img-top" alt="product image">
+                <img src="{{ products[item]['product_img'] }}" class="card-img-top" 
+                alt="product image" id="product-img">
                 <div class="card-body">
                     <h5 class="card-title text-center"><b>{{ products[item]['product_name'] }}</b></h5>
 

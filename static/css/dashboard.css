@@ -16,6 +16,11 @@
     color: white;
 }
 
+#product-img {
+    height: 8cm;
+    width: 7.5.1cm;
+}
+
 #profile-btn {
     background-color: rgb(33, 37, 41); 
     border-color: rgb(33, 37, 41);

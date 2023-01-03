@@ -67,10 +67,10 @@
             <div class="card-body">
                 <div class="row g-3">
 
-                    <div class="col-auto">
+                    <div class="img-col col-auto">
                         <br><br><br>
                         <h5 class="card-title text-center">
-                            User's Profile Photo
+                            User Profile Photo
                         </h5>
                         <br>
                         <div class="container">
@@ -78,21 +78,21 @@
                         </div>
                     </div>
 
-                    <div class="col-auto">
+                    <div class="info-col col-7">
                         <br>
                         <div class="container">
-                            <h5 class="card-title">
-                                Username: <strong>@{{username}}</strong>
-                            </h5>
+                            <h3 class="card-title">
+                                Username: <strong id="username">@{{username}}</strong>
+                            </h3>
                             <br>
                             <p class="card-text">
                                 <form class="form-group" method="post">
 
                                     <div class="row g-1">
                                         <div class="col-auto">
-                                            <h4>Full Name: </h4>
+                                            <h4 style="margin-right: 0.5cm;">Full Name: </h4>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-7">
                                             <strong>
                                                 <input type="text" class="form-control text-light" 
                                                 value="{{user_data['fullname']}}" name="fullname" required>
@@ -104,9 +104,9 @@
 
                                     <div class="row g-1">
                                         <div class="col-auto">
-                                            <h4>Email: </h4>
+                                            <h4 style="margin-right: 1.8cm;">Email: </h4>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-7">
                                             <strong>
                                                 <input type="email" class="form-control text-light" 
                                                 value="{{user_data['email']}}" name="email" required>
@@ -118,10 +118,11 @@
 
                                     <div class="row g-1">
                                         <div class="col-auto">
-                                            <h4>Address: </h4>
+                                            <h4 style="margin-right: 1cm;">Address: </h4>
                                         </div>
                                         <div class="col-auto">
-                                            <textarea type="text" class="form-control text-light" name="address">{{user_data['address']}}</textarea>
+                                            <textarea type="text" class="form-control text-light" 
+                                            name="address" cols="33">{{user_data['address']}}</textarea>
                                         </div>
                                     </div>
 
@@ -129,9 +130,9 @@
 
                                     <div class="row g-1">
                                         <div class="col-auto">
-                                            <h4>Area Pin: </h4>
+                                            <h4 style="margin-right: 0.9cm;">Area Pin: </h4>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-7">
                                             <strong>
                                                 <input type="text" class="form-control text-light" 
                                                 value="{{user_data['PINcode']}}" name="areaPIN">
@@ -141,15 +142,16 @@
 
                                     <br><br>
 
-                                    <div class="row g-2">
+                                    <div class="row g-3">
                                         <div class="col-auto">
-                                            <button class="btn btn-primary col-auto" type="submit">SAVE</button>
+                                            <button class="btn btn-success" type="submit"><h4>SAVE</h4></button>
                                         </div>
                                         <div class="col-auto">
-                                            <h3>{{update_status}}</h3>
+                                            <h1>{{update_status}}</h1>
                                         </div>
+
                                         <div class="col-auto">
-                                            <a class="btn btn-primary col-auto" href="/dashboard/user:{{username}}">BACK</a>
+                                            <a class="btn btn-primary" href="/dashboard/user:{{username}}"><h4>BACK</h4></a>
                                         </div>
                                     </div>
 

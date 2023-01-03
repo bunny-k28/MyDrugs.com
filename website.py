@@ -162,8 +162,8 @@ def signup_form():
     else: return render_template('signup.html', error="Invalid email address")
     
     user_data["fullname"] = request.form["name"]
-    user_data["address"] = request.form["address"]
-    user_data["PINcode"] = int(request.form["areapin"])
+    user_data["address"] = "Address not registered"
+    user_data["PINcode"] = 000000
 
     pswd = request.form["password"]
     if len(pswd) >= 8:
@@ -180,7 +180,7 @@ def signup_form():
 
         except Exception as E: pass
 
-        msg = "Successfully signed-up. Now you can LOGin"
+        msg = "Successfully signed-up. Now you can LOG-in"
         return render_template("signup.html", success=msg)
 
     elif signup_status is False:

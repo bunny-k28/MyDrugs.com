@@ -1,5 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+#username {
+    background: -webkit-linear-gradient(45deg, rgb(8, 69, 238), rgb(35, 182, 235));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .profile_card{
     margin-right: 5cm;
 }

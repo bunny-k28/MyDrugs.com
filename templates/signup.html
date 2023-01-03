@@ -75,122 +75,72 @@
         </div>
     {% endif %}
 
-    <br>
+    <br><br>
 
     <div class="container">
         <div class="container sub-con">
             <form class="form-group" method="post">
                 <div class="card" style="background-color: gray;">
-
+                    
                     <div class="card-header text-center text-light" style="background-color: #454040;">
                         <strong>
                             <h3>Registration</h3>
                         </strong>
                     </div>
-
+                    
                     <div class="card-body">
                         <section>
-                            <div class="row g-1">
-                                <div class="col-auto">
-                                    <label>
-                                        <strong>
-                                            <h4>Username: </h4>
-                                        </strong>
-                                    </label>
-                                </div>
-                                <div class="col-auto">
-                                    <input class="form-control" type="text" 
-                                    placeholder="username" name="username" required>
-                                </div>
-                            </div>
+                            <label>
+                                <strong>
+                                    <h4>Name: </h4>
+                                </strong>
+                            </label>
+
+                            <input class="form-control" type="text" 
+                            placeholder="Full Name" name="name" required>
 
                             <br>
 
-                            <div class="row g-1">
-                                <div class="col-auto">
-                                    <label>
-                                        <strong>
-                                            <h4>E-Mail: </h4>
-                                        </strong>
-                                    </label>
-                                </div>
-                                <div class="col-auto">
-                                    <input class="form-control" type="email" 
-                                    placeholder="username@example.com" name="email" required>
-                                </div>
-                            </div>
+                            <label>
+                                <strong>
+                                    <h5>Username: </h5>
+                                </strong>
+                            </label>
+
+                            <input class="form-control" type="text" 
+                            placeholder="username" name="username" required>
+
+                            <br>
+
+                            <label>
+                                <strong>
+                                    <h5>E-Mail: </h5>
+                                </strong>
+                            </label>
+
+                            <input class="form-control" type="email" 
+                            placeholder="username@example.com" name="email" required>
                         </section>
 
                         <hr style="color: black; height: 0.1cm">
 
                         <section>
                             <div class="row g-1">
-                                <div class="col-auto">
-                                    <label>
-                                        <strong>
-                                            <h4>Name: </h4>
-                                        </strong>
-                                    </label>
-                                </div>
-                                <div class="col-auto">
-                                    <input class="form-control" type="text" 
-                                    placeholder="Full Name" name="name" required>
-                                </div>
-                            </div>
-
-                            <br>
-
-                            <div class="row g-1">
-                                <div class="col-auto">
-                                    <label>
-                                        <strong>
-                                            <h4>Address: </h4>
-                                        </strong>
-                                    </label>
-                                </div>
-                                <div class="col-auto">
-                                    <textarea class="form-control" type="text" 
-                                    placeholder="address" name="address" 
-                                    rows="1" cols="25"></textarea>
-                                </div>
-                            </div>
-
-                            <br>
-
-                            <div class="row g-1">
-                                <div class="col-auto">
-                                    <label>
-                                        <strong>
-                                            <h4>Area Pin: </h4>
-                                        </strong>
-                                    </label>
-                                </div>
-                                <div class="col-auto">
-                                    <input class="form-control" type="text" 
-                                    placeholder="xxxxxx" name="areapin"
-                                </div>
-                            </div>
-                        </section>
-
-                        <hr style="color: black; height: 0.1cm">
-
-                        <section>
-                            <div class="row g-1">
-                                <div class="col-auto">
+                                <div class="col-2">
                                     <label>
                                         <strong>
                                             <h4>Password: </h4>
                                         </strong>
                                     </label>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-4">
                                     <input class="form-control" type="password" 
                                     placeholder="Password (min 8 char)" name="password" required>
                                 </div>
 
                                 <hr class="vr mx-1" style="color: black; padding: 0.2%; height: 1cm">
 
-                                <div class="col-auto">
+                                <div class="col-4">
                                     <input class="form-control" type="password" 
                                     placeholder="Confirm Password" name="re-password" required>
                                 </div>

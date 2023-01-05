@@ -13,6 +13,13 @@ from email.mime.text import MIMEText
 from werkzeug.security import generate_password_hash
 
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+
+def allowed_file(filename):
+    	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 def create_userID(username: str, id_len: int=6, include_puntuations: bool=False):
     r_file = os.path.join('Database', 'log_file_names.txt')
 

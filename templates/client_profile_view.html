@@ -74,7 +74,11 @@
                         </h5>
                         <br>
                         <div class="container">
-                            <img src="../../static/images/profile_frame_256px.png">
+                            {% if "{{username}}.png" in proFile %}
+                                <img src="../../static/images/{{username}}.png">
+                            {% else %}
+                                <img src="../../static/images/profile_frame_256px.png">
+                            {% endif %}
                         </div>
                     </div>
 

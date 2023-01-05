@@ -5,6 +5,7 @@ import sqlite3
 
 from flask import render_template, redirect, url_for, jsonify, request, session
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import timedelta
 from __init__ import *
 
@@ -12,6 +13,9 @@ from __init__ import *
 http = flask.Flask(__name__)
 http.secret_key = '3d9efc4wa651728'
 http.permanent_session_lifetime = timedelta(days=1)
+
+http.config['UPLOAD_FOLDER'] = "static/User_profileImages"
+http.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 code = ''
 safe_code = ''
@@ -218,7 +222,7 @@ def dashboard(user):
     else: return redirect(url_for("logout"))
 
 
-# add-to-cart route
+# cart route
 @http.route("/cart/add", methods=["POST"])
 def add_to_cart():
     if "active_user" in session:
@@ -255,8 +259,6 @@ def add_to_cart():
 
     else: return redirect(url_for("logout"))
 
-
-# pop-from-cart route
 @http.route("/cart/remove", methods=["POST"])
 def pop_from_cart():
     if "active_user" in session:
@@ -272,8 +274,6 @@ def pop_from_cart():
             else: pass
         except: return render_template('view_cart.html', username=user, status=False, cart_items=cdata)
 
-
-# view cart page route
 @http.route("/cart/view")
 def view_cart():
     if "active_user" in session:
@@ -304,9 +304,13 @@ def view_profile_redirect():
 @http.route("/profile/view/user:<username>")
 def view_profile(username):
     if "active_user" in session:
-            user_data = get_user_data(username, "all")
-            return render_template('client_profile_view.html', 
-                                username=username, user_data=user_data[-1])
+        proFile = os.listdir("static/User_profileImages")
+        user_data = get_user_data(username, "all")
+
+        return render_template('client_profile_view.html', 
+                            username=username, 
+                            proFile=proFile, 
+                            user_data=user_data[-1]) 
 
     else: return redirect(url_for("logout"))
 
@@ -318,6 +322,8 @@ def edit_profile(username):
     user_data["address"] = str(request.form['address'])
     user_data["PINcode"] = int(request.form['areaPIN'])
     user_data["email"] = str(request.form['email'])
+    
+    proFile = os.listdir("static/User_profileImages")
 
     try:
         status = update_user_data(username, user_data)
@@ -325,6 +331,7 @@ def edit_profile(username):
             return render_template('client_profile_view.html', 
                                     username=username, 
                                     user_data=user_data, 
+                                    proFile=proFile, 
                                     update_status="✅")
         elif status is False:
             print("Error updating user info")
@@ -332,6 +339,7 @@ def edit_profile(username):
             return render_template('client_profile_view.html', 
                                 username=username, 
                                 user_data=user_data, 
+                                proFile=proFile, 
                                 update_status="❌")
 
     except Exception as E:
@@ -340,7 +348,12 @@ def edit_profile(username):
         return render_template('client_profile_view.html', 
                             username=username, 
                             user_data=user_data, 
+                            proFile=proFile, 
                             update_status="❌")
+
+@http.route("/profile/edit/photo/", methods=["POST"])
+def upload_user_photo():
+    ...
 
 
 # executing statement

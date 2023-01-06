@@ -133,6 +133,28 @@ def register_user(user_data: dict):
     return True
 
 
+def delete_user_account(username: str):
+    db = sqlite3.connect("Database/mydrugs_database.db")
+    sql = db.cursor()
+
+    try:
+        sql.execute("DELETE FROM login_dets WHERE username=?", (username,))
+        sql.execute("DELETE FROM user_dets WHERE username=?", (username,))
+
+        db.commit()
+
+        if f'{username}.json' in os.listdir('Database/store/cart'): 
+            os.remove(f'Database/store/cart/{username}.json')
+        else: pass
+
+        sql.close()
+        db.close()
+
+        return True
+
+    except Exception: return False
+
+
 def update_user_data(username: str, data: dict):
     db = sqlite3.connect("Database/mydrugs_database.db")
     sql = db.cursor()

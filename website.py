@@ -17,8 +17,6 @@ http.permanent_session_lifetime = timedelta(days=1)
 http.config['UPLOAD_FOLDER'] = "static/User_profileImages"
 http.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-code = ''
-safe_code = ''
 user_data = {"username": str, "password": str, 
              "email": str, "address": str, "PINcode": int}
 
@@ -50,6 +48,8 @@ db.close()
 # home page redirector route
 @http.route("/")
 def redirect_to_home():
+    session["safe_code"] = None; session["code"] = None
+    session["delStatus"] = None; session["active_user"] = None
     return redirect(url_for("home"))
 
 @http.route("/home")
@@ -60,11 +60,14 @@ def home():
 # login page route
 @http.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("login.html", 
+        delete_profile=session["delStatus"])
 
 @http.route("/login", methods=["POST"]) 
 def login_form():
-    global safe_code
+    if 'delStatus' in session and session["delStatus"] is True: 
+        session["delStatus"] = None
+    else: pass
 
     session["active_user"] = request.form["username"]
     password = request.form["password"]
@@ -74,8 +77,8 @@ def login_form():
         return render_template("login.html", error=user_data[-1])
 
     elif user_data[0] is True:
-        if ((check_password_hash(user_data[-1], str(password)) is True) or (safe_code == password)):
-            safe_code = ''
+        if ((check_password_hash(user_data[-1], str(password)) is True) or (session["safe_code"] == password)):
+            session.pop("safe_code", None)
             return redirect(url_for("dashboard", user=f'{session["active_user"]}'))
 
         else: return render_template("login.html", 
@@ -86,11 +89,9 @@ def login_form():
 # safe-code sender route
 @http.route("/send-safecode")
 def send_safecode():
-    global safe_code
-
     mail = send_mail(session["active_user"], 'safe-code')
     if mail[0] is True:
-        safe_code = mail[-1]
+        session["safe_code"] = mail[-1]
         return redirect(url_for('login'))
 
     else: return render_template('login.html', sc_status="Unable to send Safe-Code.")
@@ -114,7 +115,7 @@ def userVerification_form():
     if exist is True:
         mail = send_mail(session["active_user"], "2FA")
         if mail[0] is True:
-            code = mail[-1]
+            session["code"] = mail[-1]
             return redirect(url_for("password_reset", for_user=session["active_user"]))
 
         elif mail[0] is False:
@@ -131,18 +132,17 @@ def password_reset():
 
 @http.route("/password-reset", methods=["POST"])
 def password_reset_form():
-    global code
 
     pswd = request.form["new_password"]
     twoFA_code = request.form["2FA"]
 
-    if twoFA_code == code: pass
+    if twoFA_code == session["code"]: pass
     else: return render_template('password_reset.html', error="You entered wrong 2FA code!")
 
     if len(pswd) >= 8:
         if pswd == request.form["confirm_password"]:
             if update_login_data(session["active_user"], pswd) is True:
-                session.clear(); code = ''
+                session.clear()
                 return render_template('password_reset.html', success="Now you can ", status="✅")
         else: return render_template('password_reset.html', error="Password doesn't match", status="❌")
     else: return render_template('password_reset.html', error="Password is too short", status="❌")
@@ -151,6 +151,10 @@ def password_reset_form():
 # signup page route
 @http.route("/signup")
 def signup():
+    if "delStatus" in session and session["delStatus"] is True: 
+        session["delStatus"] = None
+    else: pass
+
     return render_template("signup.html")
 
 @http.route("/signup", methods=["POST"])
@@ -199,7 +203,7 @@ def signup_form():
 # logout route
 @http.route("/logout")
 def logout():
-    try: session.clear()
+    try: session.pop('active_user')
     except Exception as E: pass
     return redirect(url_for("login", status='logged-out'))
 
@@ -354,6 +358,21 @@ def edit_profile(username):
 @http.route("/profile/edit/photo/", methods=["POST"])
 def upload_user_photo():
     ...
+
+@http.route("/profile/delete")
+def delete_profile():
+    if "active_user" in session:
+        user = session["active_user"]
+        user_data = get_user_data(user, "all")
+
+        if delete_user_account(user):
+            session["delStatus"] = True
+            return redirect(url_for("logout"))
+
+        else: return render_template("client_profile_view.html", 
+                                    username=user, 
+                                    delete_profile=False, 
+                                    user_data=user_data[-1])
 
 
 # executing statement

@@ -56,12 +56,19 @@
         </div>
     </nav>
 
+    
     <br><br><br><br><br><br>
-
+    
     <div class="container">
-
+        
         <link rel="stylesheet" href="../static/css/login.css">
-
+        
+        {% if delete_profile == true %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Your account was successfully deleted</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
         {% if error.__len__() > 0 %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Login Status!</strong> {{ error }} -- <a class="link-danger" 

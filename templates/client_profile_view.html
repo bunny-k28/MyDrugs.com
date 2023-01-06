@@ -57,6 +57,14 @@
     <br><br>
 
     <link rel="stylesheet" href="../../static/css/user_profile.css">
+
+    {% if delete_profile == false %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Unable to deleted your account</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
     <div class="card_container container">
         <div class="profile_card card bg-dark text-light">
 
@@ -156,6 +164,10 @@
 
                                         <div class="col-auto">
                                             <a class="btn btn-primary" href="/dashboard/user:{{username}}"><h4>BACK</h4></a>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <a class="btn btn-outline-danger" href="/profile/delete"><h4>DELETE PROFILE</h4></a>
                                         </div>
                                     </div>
 

@@ -57,28 +57,26 @@
         </div>
     </nav>
 
-    <br>
+    <br><br>
 
     <link rel="stylesheet" href="../../static/css/signup.css">
-
-    {% if error.__len__() > 0 %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Signup Status!</strong> {{ error }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-
-    {% if success.__len__() > 0 %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Signup Status!</strong> {{ success }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-
-    <br>
-
     <div class="container">
-        <div class="container sub-con">
+
+        {% if error.__len__() > 0 %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Signup Status!</strong> {{ error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    
+        {% if success.__len__() > 0 %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Signup Status!</strong> {{ success }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        <div class="container sub-con" style="width: 20cm;">
             <form class="form-group" method="post">
                 <div class="card" style="background-color: gray;">
                     

@@ -22,11 +22,7 @@ body{
     color: white;
 }
 
-.sub-con{
-    width: 20cm;
-}
-
 .alert{
-    margin-left: 18%;
-    width: 25cm;
+    margin-left: 18rem;
+    margin-right: 18rem;
 }

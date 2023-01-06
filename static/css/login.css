@@ -5,17 +5,13 @@ body{
 }
 
 .card{
-    margin-left: 6cm;
-    margin-right: 6cm;
+    width: 50rem;
+    background-color: gray;
 }
 
 .alert{
-    margin-left: 6cm;
-    margin-right: 6cm;
-}
-
-.form-group{
-    padding-left: 7cm;
+    margin-left: 15rem;
+    margin-right: 15rem;
 }
 
 .form-control:hover {

@@ -55,14 +55,12 @@
 
         </div>
     </nav>
-
     
     <br><br><br><br><br><br>
     
+    <link rel="stylesheet" href="../static/css/login.css">
+    
     <div class="container">
-        
-        <link rel="stylesheet" href="../static/css/login.css">
-        
         {% if delete_profile == true %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Your account was successfully deleted</strong>
@@ -83,10 +81,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endif %}
+    </div>
 
-        <div class="card" style="background-color: gray;">
-            <h3 class="card-header"  style="background-color: #454040;">Login</h3>
-            <div class="card-body">
+    <div class="container" align="center">
+        <div class="card">
+            <h3 class="card-header" style="background-color: #454040;">Login</h3>
+            
+            <div class="card-body" style="margin-left: 15rem;">
                 <form class="form-group" method="post">
 
                     <div class="username row g-3">
@@ -141,6 +142,7 @@
 
                 </form>
             </div>
+        
         </div>
     </div>
 

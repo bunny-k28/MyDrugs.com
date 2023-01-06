@@ -48,7 +48,7 @@ db.close()
 # home page redirector route
 @http.route("/")
 def redirect_to_home():
-    session["safe_code"] = None; session["code"] = None
+    session["safe_code"] = None; session["code"] = None; session["count"] = None
     session["delStatus"] = None; session["active_user"] = None
     return redirect(url_for("home"))
 
@@ -211,17 +211,21 @@ def logout():
 # dashboard page route
 @http.route("/dashboard/user:<user>")
 def dashboard(user):
-    count = 0
+    session["count"] = 0
 
     if "active_user" in session:
-        data = read_json("Database/store/products.json")
-        cart_data = read_json(f'Database/store/cart/{session["active_user"]}.json')
-        if cart_data:
-            count = cart_data.__len__()
+        try:
+            data = read_json("Database/store/products.json")
+            cart_data = read_json(f'Database/store/cart/{session["active_user"]}.json')
+            if cart_data:
+                session["count"] = cart_data.__len__()
 
-        return render_template("dashboard.html", 
-                            username=user, products=data, 
-                            item_count=count)
+            return render_template("dashboard.html", 
+                                username=user, products=data, 
+                                item_count=session["count"])
+        
+        except Exception as E:
+            return redirect(url_for('logout'), code=404)
 
     else: return redirect(url_for("logout"))
 

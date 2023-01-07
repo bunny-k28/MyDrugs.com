@@ -94,7 +94,7 @@
                                 </strong>
                             </label>
 
-                            <input class="form-control" type="text" 
+                            <input class="form-control" type="text" id="name"
                             placeholder="Full Name" name="name" required>
 
                             <br>
@@ -105,7 +105,7 @@
                                 </strong>
                             </label>
 
-                            <input class="form-control" type="text" 
+                            <input class="form-control" type="text" id="username"
                             placeholder="username" name="username" required>
 
                             <br>
@@ -116,7 +116,7 @@
                                 </strong>
                             </label>
 
-                            <input class="form-control" type="email" 
+                            <input class="form-control" type="email" id="email"
                             placeholder="username@example.com" name="email" required>
                         </section>
 
@@ -132,7 +132,7 @@
                                     </label>
                                 </div>
                                 <div class="col-4">
-                                    <input class="form-control" type="password" 
+                                    <input class="form-control" type="password" id="password"
                                     placeholder="Password (min 8 char)" name="password" required>
                                 </div>
 
@@ -148,7 +148,9 @@
 
                     <div class="card-footer text-center" style="background-color: #454040;">
                         <div class="col-5"></div>
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button class="btn btn-primary" type="submit" onclick="flashRegister()">
+                            <h3 id="register-msg">Register</h3>
+                        </button>
                     </div>
 
                 </div>
@@ -157,6 +159,19 @@
     </div>
 
     <br>
+
+    <script>
+        function flashRegister() {
+            var name = document.getElementById('name');
+            var username = document.getElementById('username');
+            var email = document.getElementById('email');
+            var password = document.getElementById('password');
+    
+            if (name.value && username.value && email.value && password.value) {
+                document.getElementById('register-msg').innerText = 'REGISTERING...';
+            }
+        }
+    </script>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

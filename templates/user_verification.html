@@ -76,7 +76,7 @@
             </div>
             
             <div class="col-auto">
-                <button type="submit" id="submit-btn" class="btn btn-primary mb-3 submit-btn" 
+                <button type="submit" id="verify-btn" class="btn btn-primary mb-3 submit-btn" 
                 onclick="flashRedirect()"><b>VERIFY</b></button>
             </div>
             
@@ -88,12 +88,11 @@
         </form>
     </div>
 
-
     <script>
         function flashRedirect() {
             var data = document.getElementById('inputBox');
-            if (data.value) {
-                document.getElementById('submit-btn').innerText = "Verifying...";
+            if (data.value){
+                document.getElementById('verify-btn').innerText = "VERIFYING...";
             }
         }
     </script>

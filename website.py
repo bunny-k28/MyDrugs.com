@@ -77,7 +77,7 @@ def login_form():
 
     elif user_data[0] is True:
         if ((check_password_hash(user_data[-1], str(password)) is True) or (session["safe_code"] == password)):
-            session.pop("safe_code", None)
+            session["safe_code"] = None
             return redirect(url_for("dashboard", user=f'{session["active_user"]}'))
 
         else: return render_template("login.html", 
@@ -88,7 +88,7 @@ def login_form():
 # safe-code sender route
 @http.route("/send-safecode")
 def send_safecode():
-    mail = send_mail(session["active_user"], 'safe-code')
+    mail = send_mail(session["active_user"], subject='safe-code')
     if mail[0] is True:
         session["safe_code"] = mail[-1]
         return redirect(url_for('login'))
@@ -140,7 +140,7 @@ def password_reset_form():
         if pswd == request.form["confirm_password"]:
             if update_login_data(session["active_user"], pswd) is True:
                 if send_mail(session["active_user"], subject="new-pswd")[0]:
-                    session.clear()
+                    session["active_user"] = None
                     return render_template('password_reset.html', success="Now you can ", status="✅")
                 else: 
                     print('Unable to send mail!')

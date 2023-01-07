@@ -133,8 +133,8 @@
                             <div class="row g-3">
                                 <a class="btn btn-outline-primary col-6" 
                                 type="submit" href="/send-safecode"
-                                onclick="alert('For Safe-Code click OK and check your registered E-mail inbox')">
-                                    <h5 align=""center>Login With Safe-Code</h5>
+                                onclick="alert('For Safe-Code click OK and check your registered E-mail inbox'), flashSend()">
+                                    <h5 id="send-btn" align=""center>Login With Safe-Code</h5>
                                 </a>
                             </div>
                         {% endif %}
@@ -145,6 +145,12 @@
         
         </div>
     </div>
+
+    <script>
+        function flashSend() {
+            document.getElementById("send-btn").innerHTML = "Sending Safe-Code...";
+        }
+    </script>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

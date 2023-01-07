@@ -143,12 +143,18 @@ def delete_user_account(username: str):
 
         db.commit()
 
+        sql.close()
+        db.close()
+
         if f'{username}.json' in os.listdir('Database/store/cart'): 
             os.remove(f'Database/store/cart/{username}.json')
         else: pass
 
-        sql.close()
-        db.close()
+        for filename in os.listdir('static/User_profileImages'):
+            if username in filename:
+                os.remove(f'static/User_profileImages/{filename}')
+                break
+            else: continue
 
         return True
 

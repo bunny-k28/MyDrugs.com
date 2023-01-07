@@ -65,6 +65,13 @@
         </div>
     {% endif %}
 
+    {% if profile_img == false %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Unable to change your profile photo</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
     <div class="card_container container">
         <div class="profile_card card bg-dark text-light">
 
@@ -73,32 +80,41 @@
             </div>
 
             <div class="card-body">
-                <div class="row g-3">
+                <form class="form-group" enctype="multipart/form-data" method="post">
+                    
+                    <div class="row g-3">
 
-                    <div class="img-col col-auto">
-                        <br><br><br>
-                        <h5 class="card-title text-center">
-                            User Profile Photo
-                        </h5>
-                        <br>
-                        <div class="container">
-                            {% if "{{username}}.png" in proFile %}
-                                <img src="../../static/images/{{username}}.png">
-                            {% else %}
-                                <img src="../../static/images/profile_frame_256px.png">
-                            {% endif %}
-                        </div>
-                    </div>
+                        <div class="img-col col-5">
+                            <br><br><br>
+                            <h5 class="card-title text-center">
+                                Profile Photo <label class="-label" for="file">
+                                                    <span>
+                                                        <img src="../../static/images/edit_profile_img_24px.png">
+                                                    </span>
+                                                </label>
+                                
+                                <input type="file" name="file" id="file">
+                            </h5>
 
-                    <div class="info-col col-7">
-                        <br>
-                        <div class="container">
-                            <h3 class="card-title">
-                                Username: <strong id="username">@{{username}}</strong>
-                            </h3>
                             <br>
-                            <p class="card-text">
-                                <form class="form-group" method="post">
+                            
+                            <div class="container" align="center">
+                                {% if filename != none and username in filename%}
+                                    <img id="profile-img" src="../../static/User_profileImages/{{filename}}">
+                                {% else %}
+                                    <img src="../../static/images/profile_frame_256px.png">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="info-col col-7">
+                            <br>
+                            <div class="container">
+                                <h3 class="card-title">
+                                    Username: <strong id="username">@{{username}}</strong>
+                                </h3>
+                                <br>
+                                <p class="card-text">
 
                                     <div class="row g-1">
                                         <div class="col-auto">
@@ -171,13 +187,14 @@
                                         </div>
                                     </div>
 
-                                </form>
-                            </p><br>
+                                </p><br>
 
+                            </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div>
+                        
+                </form>
             </div>
 
         </div>

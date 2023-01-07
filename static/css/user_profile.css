@@ -6,6 +6,20 @@
     -webkit-text-fill-color: transparent;
 }
 
+#profile-img {
+    width: 100px;
+    height: 100px;
+}
+
+#file {
+    display: none;
+}
+
+.alert{
+    margin-left: 30rem;
+    width: 58rem;
+}
+
 .profile_card{
     margin-right: 5cm;
 }

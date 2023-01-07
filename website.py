@@ -3,9 +3,8 @@ import flask
 import dotenv
 import sqlite3
 
-from flask import render_template, redirect, url_for, jsonify, request, session
+from flask import render_template, redirect, url_for, request, session
 from werkzeug.security import check_password_hash
-from werkzeug.utils import secure_filename
 from datetime import timedelta
 from __init__ import *
 
@@ -49,7 +48,7 @@ db.close()
 @http.route("/")
 def redirect_to_home():
     session["safe_code"] = None; session["code"] = None; session["count"] = None
-    session["delStatus"] = None; session["active_user"] = None
+    session["delStatus"] = None; session["active_user"] = None; session["profile_img_name"] = None
     return redirect(url_for("home"))
 
 @http.route("/home")
@@ -303,6 +302,10 @@ def view_cart():
 # view profile redirector route
 @http.route("/profile/view")
 def view_profile_redirect():
+    proFile = os.listdir("static/User_profileImages")
+    if session["profile_img_name"] in proFile: pass
+    else: session["profile_img_name"] = None
+
     if "active_user" in session:
         return redirect(url_for("view_profile", 
                                 username=session["active_user"]))
@@ -312,12 +315,10 @@ def view_profile_redirect():
 @http.route("/profile/view/user:<username>")
 def view_profile(username):
     if "active_user" in session:
-        proFile = os.listdir("static/User_profileImages")
         user_data = get_user_data(username, "all")
-
         return render_template('client_profile_view.html', 
                             username=username, 
-                            proFile=proFile, 
+                            filename = session["profile_img_name"], 
                             user_data=user_data[-1]) 
 
     else: return redirect(url_for("logout"))
@@ -330,8 +331,27 @@ def edit_profile(username):
     user_data["address"] = str(request.form['address'])
     user_data["PINcode"] = int(request.form['areaPIN'])
     user_data["email"] = str(request.form['email'])
+    file = request.files['file']
     
     proFile = os.listdir("static/User_profileImages")
+    try:
+        if file and allowed_file(file.filename):
+            ext = file.filename.split(".")[-1]
+            session["profile_img_name"] = f"{username}.{ext}"
+            if session["profile_img_name"] in proFile:
+                os.remove(os.path.join(http.config['UPLOAD_FOLDER'], 
+                                        session["profile_img_name"]))
+
+                file.save(os.path.join(http.config['UPLOAD_FOLDER'], 
+                                        session["profile_img_name"]))
+
+            else:
+                file.save(os.path.join(http.config['UPLOAD_FOLDER'], 
+                            session["profile_img_name"]))
+
+    except Exception as E:
+        print(E)
+        print("Error uploading profile image")
 
     try:
         status = update_user_data(username, user_data)
@@ -340,7 +360,9 @@ def edit_profile(username):
                                     username=username, 
                                     user_data=user_data, 
                                     proFile=proFile, 
+                                    filename = session["profile_img_name"], 
                                     update_status="✅")
+        
         elif status is False:
             print("Error updating user info")
             user_data = get_user_data(username, "all")
@@ -348,6 +370,7 @@ def edit_profile(username):
                                 username=username, 
                                 user_data=user_data, 
                                 proFile=proFile, 
+                                filename = session["profile_img_name"], 
                                 update_status="❌")
 
     except Exception as E:
@@ -357,12 +380,11 @@ def edit_profile(username):
                             username=username, 
                             user_data=user_data, 
                             proFile=proFile, 
+                            filename = session["profile_img_name"], 
                             update_status="❌")
 
-@http.route("/profile/edit/photo/", methods=["POST"])
-def upload_user_photo():
-    ...
 
+# delete profile route
 @http.route("/profile/delete")
 def delete_profile():
     if "active_user" in session:

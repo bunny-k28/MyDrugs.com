@@ -3,6 +3,7 @@ import json
 import random
 import string
 import dotenv
+import hashlib
 import sqlite3
 import datetime
 import smtplib, ssl
@@ -49,6 +50,7 @@ def create_userID(username: str, id_len: int=6, include_puntuations: bool=False)
                 for _ in range(id_len))
 
         uid = username[0] + uid + username[-1]
+        uid = hashlib.md5(uid.encode()).hexdigest()
 
         if uid in available_logs: continue
         else: 

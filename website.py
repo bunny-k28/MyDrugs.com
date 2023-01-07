@@ -107,12 +107,10 @@ def pswd_reset_userVerification():
 
 @http.route("/password-reset/user-verification", methods=["POST"])
 def userVerification_form():
-    global code
-
     session["active_user"] = request.form["username"]
     exist = user_existstance(session["active_user"])
     if exist is True:
-        mail = send_mail(session["active_user"], "2FA")
+        mail = send_mail(session["active_user"], subject="2FA")
         if mail[0] is True:
             session["code"] = mail[-1]
             return redirect(url_for("password_reset", for_user=session["active_user"]))
@@ -141,8 +139,12 @@ def password_reset_form():
     if len(pswd) >= 8:
         if pswd == request.form["confirm_password"]:
             if update_login_data(session["active_user"], pswd) is True:
-                session.clear()
-                return render_template('password_reset.html', success="Now you can ", status="✅")
+                if send_mail(session["active_user"], subject="new-pswd")[0]:
+                    session.clear()
+                    return render_template('password_reset.html', success="Now you can ", status="✅")
+                else: 
+                    print('Unable to send mail!')
+                    return render_template('password_reset.html', success="Now you can ", status="✅")
         else: return render_template('password_reset.html', error="Password doesn't match", status="❌")
     else: return render_template('password_reset.html', error="Password is too short", status="❌")
 
@@ -187,8 +189,13 @@ def signup_form():
 
         except Exception as E: pass
 
-        msg = "Successfully signed-up. Now you can LOG-in"
-        return render_template("signup.html", success=msg)
+        if send_mail(username, subject="signup")[0]:
+            msg = "Successfully signed-up. Now you can LOG-in"
+            return render_template("signup.html", success=msg)
+        else:
+            print('Unable to send mail!')
+            msg = "Successfully signed-up. Now you can LOG-in"
+            return render_template("signup.html", success=msg) 
 
     elif signup_status is False:
         msg = "Unable to create your account. Please try after some time."

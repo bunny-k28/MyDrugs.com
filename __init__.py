@@ -20,6 +20,14 @@ def allowed_file(filename):
     	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def greeting(user=str):
+    time = datetime.datetime.now().hour
+
+    if time < 12: return "Good Morning" + ", " + user
+    elif time <= 15: return "Good Afternoon" + ", " + user
+    else: return "Good Evening" + ", " + user
+
+
 def create_userID(username: str, id_len: int=6, include_puntuations: bool=False):
     r_file = os.path.join('Database', 'log_file_names.txt')
 
@@ -134,6 +142,8 @@ def register_user(user_data: dict):
 
 
 def delete_user_account(username: str):
+    user_email = get_user_data(username, "all")[-1]["email"]
+
     db = sqlite3.connect("Database/mydrugs_database.db")
     sql = db.cursor()
 
@@ -155,6 +165,8 @@ def delete_user_account(username: str):
                 os.remove(f'static/User_profileImages/{filename}')
                 break
             else: continue
+        
+        send_mail(username=username, email=user_email, subject="account-delete")
 
         return True
 
@@ -232,7 +244,7 @@ def generate_2FA_code(code_len: int=6, type: str="int"):
     return code
 
 
-def send_mail(username: str, type: str|None=...):
+def send_mail(username: str, email: str|None=..., subject: str|None=...):
     date = datetime.datetime.now().strftime('%d-%m-%Y')
     time = datetime.datetime.now().strftime('%I:%M')
 
@@ -243,25 +255,64 @@ def send_mail(username: str, type: str|None=...):
     SERVER_PORT = dotenv.get_key("Database/secrets.env", "SERVER_PORT")
 
     message = MIMEMultipart()
-    user_email = get_user_data(username, "all")[-1]["email"]
 
-    if type in ["2FA", "pswd-reset", None]: 
+    try: user_email = get_user_data(username, "all")[-1]["email"]
+    except Exception: user_email = email
+
+    if subject in ["2FA", "pswd-reset", 'password-reset', None]: 
         code = generate_2FA_code()
-        body = f"""<html>
-<h3>Your 2FA Code for <em><u>Password Reset</u></em> is: </h3>
-<spam><h1 style="background-color: yellow;"><b>{code}</b></h1></spam>
-<h3>Password-Reset Request generated on {date} at {time}</h3>
-</html>"""
+        
         message["Subject"] = 'Password Reset Request for MyDrugs Account'
-
-    elif type in ["login-2", "forgot-pswd-login", "safe-code"]:
-        code = generate_2FA_code(16, "str")
         body = f"""<html>
-<h3>Your safe code for <em><u>Loggin-In</u></em> to MyDrugs account is: </h3>
-<spam><h1 style="background-color: yellow;"><b>{code}</b></h1></spam>
-<h3>Safe-Code login Request generated on {date} at {time}</h3>
-</html>"""
+        <h3>Your 2FA Code for <em><u>Password Reset</u></em> is: </h3>
+        <spam><h1 style="background-color: yellow;"><b>{code}</b></h1></spam><br>
+        <h3>Password-Reset Request generated on {date} at {time}</h3>
+        </html>"""
+
+    elif subject in ["login-2", "forgot-pswd-login", "safe-code", "forgot-password-login"]:
+        code = generate_2FA_code(16, "str")
+        
         message["Subject"] = 'Login Safe-Code for MyDrugs Account'
+        body = f"""<html>
+        <h3>Your safe code for <em><u>Loggin-In</u></em> to MyDrugs account is: </h3>
+        <spam><h1 style="background-color: yellow;"><b>{code}</b></h1></spam><br>
+        <h3>Safe-Code login Request generated on {date} at {time}</h3>
+        </html>"""
+
+    elif subject in ['pswd-changed', 'new-pswd', 'password-changed', 'new-password']:
+        message["Subject"] = 'Password Changed for MyDrugs Account'
+        body = f"""<html>
+        <h2>Your password for MyDrugs account has been changed.</h2>
+        If it's not you, please contact us immediately.<br>
+        <h3>Password changed on {date} at {time}</h3>
+        </html>"""
+
+    elif subject in ['register', 'new-user', 'sign-up', 'signup']:
+        try: user_fullname = get_user_data(username, "all")[-1]["fullname"]
+        except Exception: user_fullname = "User"
+
+        message["Subject"] = 'Welcome to MyDrugs'
+        body = f"""<html><h2>{greeting(user_fullname)}</h2><br>
+        Thanks for registering with us. We sell premium quality <b>DRUGS</b> at affordable prices.<br>
+        Just select the drug you want to buy and add it to your cart. We will deliver it to your doorstep.<br>
+        If you have any questions, please contact us through<br>
+            ~ <b><a href="mydrugs.allhelp@gmail.com">Mail</a></b> or<br>
+            ~ <b><a href="https://api.whatsapp.com/send?phone=8745951248&text=MyDrugs.com">WhatsApp</a></b>
+
+        <br><br>
+
+        Thanks,<br>
+        MyDrugs Team
+        </html>"""
+
+    elif subject in ['account-delete', 'user-delete', 'user-removed']:
+        message["Subject"] = 'Account Deleted for MyDrugs'
+        body = f"""<html><h2>{greeting(username)}</h2><br>
+        Your account has been deleted from our database.<br>
+        Hope you had a great time with us. And Hope you'll join us again soom.<br>
+
+        <h3>Account deleted on {date} at {time}</h3>
+        </html>"""
 
     message["From"] = "MyDrugs.com"
     message["To"] = user_email
@@ -280,4 +331,4 @@ def send_mail(username: str, type: str|None=...):
 
     except Exception as E: 
         print("Error while sending email: ", E)
-        return (False)
+        return (False, None)
